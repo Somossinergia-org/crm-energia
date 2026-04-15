@@ -10,6 +10,7 @@ import QuickLogModal from '../components/prospects/QuickLogModal';
 import ProspectModal from '../components/prospects/ProspectModal';
 import ProspectServiciosPanel from '../components/prospects/ProspectServiciosPanel';
 import DocumentsPanel from '../components/prospects/DocumentsPanel';
+import ProspectAIPanel from '../components/ProspectAIPanel';
 import { toast } from 'react-toastify';
 import {
   HiOutlinePhone,
@@ -51,6 +52,7 @@ export default function ProspectDetail() {
   const user = useAuthStore((s) => s.user);
   const [showQuickLog, setShowQuickLog] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<'historial' | 'ia'>('historial');
 
   const { data: prospectData, isLoading } = useQuery({
     queryKey: ['prospect', id],
@@ -542,23 +544,58 @@ export default function ProspectDetail() {
           )}
         </div>
 
-        {/* Columna derecha: timeline de actividad */}
-        <div className="lg:col-span-2">
-          <div className="card p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                <HiOutlineClock className="w-4 h-4 text-gray-400" />
-                Historial de actividad ({entries.length})
-              </h3>
-              <button
-                onClick={() => setShowQuickLog(true)}
-                className="text-sm text-primary-600 hover:text-primary-800 font-medium"
-              >
-                + Registrar
-              </button>
-            </div>
-            <ContactTimeline entries={entries} />
+        {/* Columna derecha: tabs */}
+        <div className="lg:col-span-2 space-y-4">
+          {/* Tab bar */}
+          <div className="flex gap-1 border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab('historial')}
+              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                activeTab === 'historial'
+                  ? 'border-primary-600 text-primary-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <HiOutlineClock className="w-4 h-4" />
+              Historial
+            </button>
+            <button
+              onClick={() => setActiveTab('ia')}
+              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                activeTab === 'ia'
+                  ? 'border-indigo-500 text-indigo-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              ✨ Asistente IA
+            </button>
           </div>
+
+          {/* Tab content */}
+          {activeTab === 'historial' && (
+            <div className="card p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <HiOutlineClock className="w-4 h-4 text-gray-400" />
+                  Historial de actividad ({entries.length})
+                </h3>
+                <button
+                  onClick={() => setShowQuickLog(true)}
+                  className="text-sm text-primary-600 hover:text-primary-800 font-medium"
+                >
+                  + Registrar
+                </button>
+              </div>
+              <ContactTimeline entries={entries} />
+            </div>
+          )}
+
+          {activeTab === 'ia' && (
+            <ProspectAIPanel
+              prospectId={prospect.id}
+              prospectNombre={prospect.nombre_negocio}
+            />
+          )}
         </div>
       </div>
 

@@ -34,6 +34,9 @@ const envSchema = z.object({
   // Cifrado
   ENCRYPTION_KEY: z.string().min(16).default('dev-encryption-key-32-chars-ok!'),
 
+  // IA
+  GEMINI_API_KEY: z.string().optional().default(''),
+
   // SMTP
   SMTP_HOST: z.string().optional().default(''),
   SMTP_PORT: z.coerce.number().optional().default(587),

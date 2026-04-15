@@ -1,6 +1,7 @@
 import { useAuthStore } from '../stores/authStore';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, Link } from 'react-router-dom';
+import BriefingWidget from '../components/BriefingWidget';
 import {
   HiOutlineUsers,
   HiOutlinePhone,
@@ -261,6 +262,11 @@ export default function Dashboard() {
         <p className="text-gray-500 mt-1">
           Aqui tienes el resumen de hoy
         </p>
+      </div>
+
+      {/* Briefing IA */}
+      <div className="mb-6">
+        <BriefingWidget />
       </div>
 
       {/* KPIs */}

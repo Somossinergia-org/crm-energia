@@ -194,7 +194,7 @@ function ChartSkeleton({ height = 220 }: { height?: number }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
       <Skeleton className="h-4 w-40" />
-      <Skeleton style={{ height }} className="w-full" />
+      <div className="w-full animate-pulse rounded bg-gray-200" style={{ height }} />
     </div>
   );
 }
@@ -434,7 +434,7 @@ export default function Reportes() {
                   <XAxis type="number" tick={{ fontSize: 12, fill: '#6b7280' }} tickLine={false} axisLine={false} />
                   <YAxis dataKey="label" type="category" tick={{ fontSize: 12, fill: '#374151' }} width={110} tickLine={false} axisLine={false} />
                   <Tooltip
-                    formatter={(val: number) => [val, 'Prospectos']}
+                    formatter={(val) => [val ?? 0, 'Prospectos']}
                     contentStyle={{ fontSize: 13, borderRadius: 8, border: '1px solid #e5e7eb' }}
                   />
                   <Bar dataKey="total" radius={[0, 4, 4, 0]} maxBarSize={22}>
@@ -524,7 +524,7 @@ export default function Reportes() {
                         ))}
                       </Pie>
                       <Tooltip
-                        formatter={(val: number, name: string) => [val, name]}
+                        formatter={(val, name) => [val ?? 0, name]}
                         contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e5e7eb' }}
                       />
                     </PieChart>

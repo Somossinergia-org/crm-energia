@@ -239,8 +239,8 @@ function TabPerfil({
   setUser,
   showToast,
 }: {
-  user: ReturnType<typeof useAuthStore>['user'];
-  setUser: (u: NonNullable<ReturnType<typeof useAuthStore>['user']>) => void;
+  user: import('../services/auth.service').User | null;
+  setUser: (u: import('../services/auth.service').User) => void;
   showToast: (msg: string, type?: 'success' | 'error') => void;
 }) {
   const [form, setForm] = useState<ProfileForm>({
@@ -283,7 +283,7 @@ function TabPerfil({
   const handleSaveProfile = async () => {
     setLoadingProfile(true);
     try {
-      const res = await api.put<{ success: boolean; data: typeof user }>('/users/profile', {
+      const res = await api.put<{ success: boolean; data: import('../services/auth.service').User }>('/users/profile', {
         nombre: form.nombre,
         apellidos: form.apellidos,
         telefono: form.telefono,
@@ -291,7 +291,7 @@ function TabPerfil({
         foto_url: form.foto_url,
       });
       if (res.data.success && res.data.data) {
-        setUser(res.data.data as NonNullable<ReturnType<typeof useAuthStore>['user']>);
+        setUser(res.data.data);
       }
       showToast('Perfil actualizado correctamente');
     } catch {
