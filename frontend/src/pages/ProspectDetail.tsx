@@ -11,6 +11,7 @@ import ProspectModal from '../components/prospects/ProspectModal';
 import ProspectServiciosPanel from '../components/prospects/ProspectServiciosPanel';
 import DocumentsPanel from '../components/prospects/DocumentsPanel';
 import ProspectAIPanel from '../components/ProspectAIPanel';
+import ConversacionTab from '../components/prospects/ConversacionTab';
 import { toast } from 'react-toastify';
 import {
   HiOutlinePhone,
@@ -52,7 +53,7 @@ export default function ProspectDetail() {
   const user = useAuthStore((s) => s.user);
   const [showQuickLog, setShowQuickLog] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<'historial' | 'ia'>('historial');
+  const [activeTab, setActiveTab] = useState<'historial' | 'conversacion' | 'ia'>('historial');
 
   const { data: prospectData, isLoading } = useQuery({
     queryKey: ['prospect', id],
@@ -560,6 +561,16 @@ export default function ProspectDetail() {
               Historial
             </button>
             <button
+              onClick={() => setActiveTab('conversacion')}
+              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                activeTab === 'conversacion'
+                  ? 'border-blue-500 text-blue-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              💬 Conversacion
+            </button>
+            <button
               onClick={() => setActiveTab('ia')}
               className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
                 activeTab === 'ia'
@@ -587,6 +598,12 @@ export default function ProspectDetail() {
                 </button>
               </div>
               <ContactTimeline entries={entries} />
+            </div>
+          )}
+
+          {activeTab === 'conversacion' && (
+            <div className="card p-4">
+              <ConversacionTab prospectId={prospect.id} />
             </div>
           )}
 

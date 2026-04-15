@@ -5,6 +5,7 @@ import {
   HiOutlineUsers,
   HiOutlineCalendar,
   HiOutlineMail,
+  HiOutlineInbox,
   HiOutlineChartBar,
   HiOutlineCog,
   HiOutlineLightningBolt,
@@ -27,6 +28,7 @@ const comercialNav = [
 const herramientasNav = [
   { name: 'Mapa', href: '/mapa', icon: HiOutlineMap },
   { name: 'Agenda', href: '/agenda', icon: HiOutlineCalendar },
+  { name: 'Inbox', href: '/inbox', icon: HiOutlineInbox },
   { name: 'Emails', href: '/emails', icon: HiOutlineMail },
   { name: 'Calculadora', href: '/calculadora', icon: HiOutlineLightningBolt },
   { name: 'Reportes', href: '/reportes', icon: HiOutlineChartBar },

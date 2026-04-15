@@ -23,6 +23,7 @@ import documentsRoutes from './routes/documents.routes';
 import billParserRoutes from './routes/billParser.routes';
 import proposalRoutes from './routes/proposal.routes';
 import aiRoutes from './routes/ai.routes';
+import gmailRoutes from './routes/gmail.routes';
 import path from 'path';
 
 const app = express();
@@ -58,6 +59,7 @@ app.use('/api/documents', documentsRoutes);
 app.use('/api/bill', billParserRoutes);
 app.use('/api/proposals', proposalRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/gmail', gmailRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
 // Health check
