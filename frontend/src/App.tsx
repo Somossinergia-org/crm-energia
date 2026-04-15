@@ -14,6 +14,7 @@ import Configuracion from './pages/Configuracion';
 import Inbox from './pages/Inbox';
 import Layout from './pages/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import AgentPage from './pages/AgentPage';
 
 export default function App() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
         <Route path="calculadora" element={<Calculadora />} />
         <Route path="reportes" element={<Reportes />} />
         <Route path="configuracion" element={<Configuracion />} />
+        <Route path="agente" element={<AgentPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

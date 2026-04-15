@@ -26,6 +26,7 @@ const comercialNav = [
 ];
 
 const herramientasNav = [
+  { name: 'Agente IA', href: '/agente', icon: HiOutlineLightningBolt },
   { name: 'Mapa', href: '/mapa', icon: HiOutlineMap },
   { name: 'Agenda', href: '/agenda', icon: HiOutlineCalendar },
   { name: 'Inbox', href: '/inbox', icon: HiOutlineInbox },
