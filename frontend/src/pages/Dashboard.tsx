@@ -1,6 +1,9 @@
 import { useAuthStore } from '../stores/authStore';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, Link } from 'react-router-dom';
+import BriefingWidget from '../components/BriefingWidget';
+import RadarOportunidades from '../components/RadarOportunidades';
+import PrediccionCierres from '../components/PrediccionCierres';
 import {
   HiOutlineUsers,
   HiOutlinePhone,
@@ -251,16 +254,51 @@ export default function Dashboard() {
     );
   };
 
+  const handleExportExcel = () => {
+    window.open('/api/analytics/export/excel', '_blank');
+  };
+
+  const handleExportPDF = () => {
+    window.open('/api/analytics/export/pdf', '_blank');
+  };
+
   return (
     <div className="space-y-6">
-      {/* Saludo */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Buenos dias, {user?.nombre}
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Aqui tienes el resumen de hoy
-        </p>
+      {/* Saludo + exportaciones */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Buenos dias, {user?.nombre}
+          </h1>
+          <p className="text-gray-500 mt-1">
+            Aqui tienes el resumen de hoy
+          </p>
+        </div>
+        <div className="flex gap-2 shrink-0 mt-1">
+          <button
+            onClick={handleExportExcel}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+          >
+            📊 Excel
+          </button>
+          <button
+            onClick={handleExportPDF}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+          >
+            📄 PDF
+          </button>
+        </div>
+      </div>
+
+      {/* Briefing IA */}
+      <div className="mb-6">
+        <BriefingWidget />
+      </div>
+
+      {/* Radar + Predicción */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <RadarOportunidades />
+        <PrediccionCierres />
       </div>
 
       {/* KPIs */}

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { SERVICIOS_CONFIG, type ServicioTipo } from '../services/servicios.service';
 import { useAuthStore } from '../stores/authStore';
 import api from '../services/api';
+import BillUploader, { type ParsedBillData } from '../components/BillUploader';
 
 // --- Types ---
 interface ServiceResult {
@@ -963,7 +964,6 @@ export default function Calculadora() {
   const [activeService, setActiveService] = useState<ServicioTipo>('energia');
   const [formData, setFormData] = useState<AllFormData>({ ...initialFormData });
   const [results, setResults] = useState<Partial<Record<ServicioTipo, ServiceResult>>>({});
-  const [uploading, setUploading] = useState(false);
   const [billInfo, setBillInfo] = useState<{ confianza: number; campos: string[]; advertencias: string[]; comercializadora: string | null } | null>(null);
   const [showProposalModal, setShowProposalModal] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
@@ -974,6 +974,56 @@ export default function Calculadora() {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const user = useAuthStore((s) => s.user);
+  const [showUploader, setShowUploader] = useState(false);
+
+  const handleBillData = (data: ParsedBillData) => {
+    if (data.tarifa) setFormData(prev => ({ ...prev, energia: { ...prev.energia, tarifa: data.tarifa! } }));
+    if (data.potencias.length > 0) {
+      setFormData(prev => ({
+        ...prev,
+        energia: {
+          ...prev.energia,
+          potP1: data.potencias[0] ?? prev.energia.potP1,
+          potP2: data.potencias[1] ?? prev.energia.potP2,
+          potP3: data.potencias[2] ?? prev.energia.potP3,
+          potP4: data.potencias[3] ?? prev.energia.potP4,
+          potP5: data.potencias[4] ?? prev.energia.potP5,
+          potP6: data.potencias[5] ?? prev.energia.potP6,
+        },
+      }));
+    }
+    if (data.consumos.length > 0) {
+      setFormData(prev => ({
+        ...prev,
+        energia: {
+          ...prev.energia,
+          conP1: data.consumos[0] ?? prev.energia.conP1,
+          conP2: data.consumos[1] ?? prev.energia.conP2,
+          conP3: data.consumos[2] ?? prev.energia.conP3,
+          conP4: data.consumos[3] ?? prev.energia.conP4,
+          conP5: data.consumos[4] ?? prev.energia.conP5,
+          conP6: data.consumos[5] ?? prev.energia.conP6,
+        },
+      }));
+    }
+    if (data.preciosEnergia.length > 0) {
+      setFormData(prev => ({
+        ...prev,
+        energia: {
+          ...prev.energia,
+          precioP1: data.preciosEnergia[0] ?? prev.energia.precioP1,
+          precioP2: data.preciosEnergia[1] ?? prev.energia.precioP2,
+          precioP3: data.preciosEnergia[2] ?? prev.energia.precioP3,
+          precioP4: data.preciosEnergia[3] ?? prev.energia.precioP4,
+          precioP5: data.preciosEnergia[4] ?? prev.energia.precioP5,
+          precioP6: data.preciosEnergia[5] ?? prev.energia.precioP6,
+        },
+      }));
+    }
+    setShowUploader(false);
+    setActiveService('energia');
+    toast.success(`Datos importados de ${data.comercializadora || 'factura'} (confianza: ${data.confianza}%)`);
+  };
 
   const updateField = (service: ServicioTipo, field: string, value: string | number | boolean) => {
     setFormData((prev) => ({
@@ -998,9 +1048,8 @@ export default function Calculadora() {
     setBillInfo(null);
   };
 
-  // === SUBIDA Y PARSEO DE FACTURA PDF ===
+  // === SUBIDA Y PARSEO DE FACTURA PDF (legacy - usado por input oculto) ===
   const handleBillUpload = async (file: File) => {
-    setUploading(true);
     setBillInfo(null);
     try {
       const fd = new FormData();
@@ -1081,7 +1130,6 @@ export default function Calculadora() {
       const msg = err.response?.data?.error || 'Error al procesar la factura';
       toast.error(msg);
     } finally {
-      setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
@@ -1177,6 +1225,7 @@ export default function Calculadora() {
           <p className="text-sm text-gray-500">Formulas reales basadas en tarifas del mercado espanol 2025</p>
         </div>
         <div className="shrink-0">
+          {/* Legacy hidden input kept for handleBillUpload compatibility */}
           <input
             ref={fileInputRef}
             type="file"
@@ -1188,30 +1237,22 @@ export default function Calculadora() {
             }}
           />
           <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
+            onClick={() => setShowUploader((v) => !v)}
             className="btn-primary flex items-center gap-2"
           >
-            {uploading ? (
-              <>
-                <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
-                  <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="currentColor" className="opacity-75" />
-                </svg>
-                Leyendo factura...
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                </svg>
-                Subir factura PDF
-              </>
-            )}
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            {showUploader ? 'Ocultar importador' : 'Importar desde factura'}
           </button>
-          <p className="text-[10px] text-gray-400 mt-1 text-right">Lee automaticamente los datos</p>
+          <p className="text-[10px] text-gray-400 mt-1 text-right">PDF o foto con IA</p>
         </div>
       </div>
+
+      {/* BillUploader expandible */}
+      {showUploader && (
+        <BillUploader onResult={handleBillData} compact={false} />
+      )}
 
       {/* Service selector */}
       <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">

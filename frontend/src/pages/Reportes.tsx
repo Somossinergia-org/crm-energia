@@ -1,5 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import api from '../services/api';
+import { HiOutlineDownload, HiOutlineDocumentDownload } from 'react-icons/hi';
+import RadarOportunidades from '../components/RadarOportunidades';
+import InformeWidget from '../components/InformeWidget';
 import {
   BarChart,
   Bar,
@@ -194,7 +197,7 @@ function ChartSkeleton({ height = 220 }: { height?: number }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
       <Skeleton className="h-4 w-40" />
-      <Skeleton style={{ height }} className="w-full" />
+      <div className="w-full animate-pulse rounded bg-gray-200" style={{ height }} />
     </div>
   );
 }
@@ -362,7 +365,7 @@ export default function Reportes() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* Cabecera */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Reportes</h1>
             <p className="text-sm text-gray-500 mt-0.5">
@@ -373,12 +376,28 @@ export default function Reportes() {
                 </span>
               )}
             </p>
+            {!loading && (
+              <span className="text-sm text-gray-400">
+                {kpis.total.toLocaleString('es-ES')} prospectos totales
+              </span>
+            )}
           </div>
-          {!loading && (
-            <span className="text-sm text-gray-400">
-              {kpis.total.toLocaleString('es-ES')} prospectos totales
-            </span>
-          )}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => window.open('/api/analytics/export/excel', '_blank')}
+              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+            >
+              <HiOutlineDownload className="w-4 h-4" />
+              Exportar Excel
+            </button>
+            <button
+              onClick={() => window.open('/api/analytics/export/pdf', '_blank')}
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
+            >
+              <HiOutlineDocumentDownload className="w-4 h-4" />
+              Exportar PDF
+            </button>
+          </div>
         </div>
 
         {/* Error no bloqueante */}
@@ -434,7 +453,7 @@ export default function Reportes() {
                   <XAxis type="number" tick={{ fontSize: 12, fill: '#6b7280' }} tickLine={false} axisLine={false} />
                   <YAxis dataKey="label" type="category" tick={{ fontSize: 12, fill: '#374151' }} width={110} tickLine={false} axisLine={false} />
                   <Tooltip
-                    formatter={(val: number) => [val, 'Prospectos']}
+                    formatter={(val) => [val ?? 0, 'Prospectos']}
                     contentStyle={{ fontSize: 13, borderRadius: 8, border: '1px solid #e5e7eb' }}
                   />
                   <Bar dataKey="total" radius={[0, 4, 4, 0]} maxBarSize={22}>
@@ -524,7 +543,7 @@ export default function Reportes() {
                         ))}
                       </Pie>
                       <Tooltip
-                        formatter={(val: number, name: string) => [val, name]}
+                        formatter={(val, name) => [val ?? 0, name]}
                         contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e5e7eb' }}
                       />
                     </PieChart>
@@ -603,6 +622,12 @@ export default function Reportes() {
         )}
 
         {loading && <ChartSkeleton height={160} />}
+
+        {/* ── Radar de oportunidades ── */}
+        <RadarOportunidades />
+
+        {/* ── Informe semanal IA ── */}
+        <InformeWidget />
 
       </div>
     </div>

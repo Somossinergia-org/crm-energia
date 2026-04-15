@@ -22,6 +22,10 @@ import serviciosRoutes from './routes/servicios.routes';
 import documentsRoutes from './routes/documents.routes';
 import billParserRoutes from './routes/billParser.routes';
 import proposalRoutes from './routes/proposal.routes';
+import aiRoutes from './routes/ai.routes';
+import gmailRoutes from './routes/gmail.routes';
+import agentRoutes from './routes/agent.routes';
+import analyticsRoutes from './routes/analytics.routes';
 import path from 'path';
 
 const app = express();
@@ -56,6 +60,10 @@ app.use('/api/servicios', serviciosRoutes);
 app.use('/api/documents', documentsRoutes);
 app.use('/api/bill', billParserRoutes);
 app.use('/api/proposals', proposalRoutes);
+app.use('/api/ai', aiRoutes);
+app.use('/api/gmail', gmailRoutes);
+app.use('/api/agent', agentRoutes);
+app.use('/api/analytics', analyticsRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
 // Health check

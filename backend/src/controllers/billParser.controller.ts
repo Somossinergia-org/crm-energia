@@ -3,6 +3,9 @@ import { AuthRequest } from '../middleware/auth';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { extractEnergyBillFromText, extractEnergyBillFromImage } from '../services/gemini.service';
+import { env } from '../config/env';
+import { logger } from '../utils/logger';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pdfParse = require('pdf-parse');
@@ -27,6 +30,19 @@ export const uploadBill = multer({
       cb(null, true);
     } else {
       cb(new Error('Solo se aceptan archivos PDF'));
+    }
+  },
+}).single('factura');
+
+export const uploadBillOrPhoto = multer({
+  storage,
+  limits: { fileSize: 15 * 1024 * 1024 }, // 15MB
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic'];
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Solo se aceptan PDF o imágenes (JPG, PNG, WEBP)'));
     }
   },
 }).single('factura');
@@ -799,6 +815,31 @@ export async function parseBill(req: AuthRequest, res: Response, next: NextFunct
       const result = parseBillText(pdfData.text);
       result.textoExtraido = pdfData.text.substring(0, 5000); // Primeros 5000 chars para debug
 
+      // Si confianza < 75 y tenemos Gemini, intentar con IA
+      if (result.confianza < 75 && env.GEMINI_API_KEY) {
+        try {
+          const aiResult = await extractEnergyBillFromText(pdfData.text);
+          if (aiResult.confianza > result.confianza) {
+            // Fusionar: usar IA para los campos que falten
+            if (!result.comercializadora && aiResult.comercializadora) result.comercializadora = aiResult.comercializadora;
+            if (!result.cups && aiResult.cups) result.cups = aiResult.cups;
+            if (!result.tarifa && aiResult.tarifa) result.tarifa = aiResult.tarifa;
+            if (!result.importeTotal && aiResult.importe_total) result.importeTotal = aiResult.importe_total;
+            if (!result.importePotencia && aiResult.importe_potencia) result.importePotencia = aiResult.importe_potencia;
+            if (!result.importeEnergia && aiResult.importe_energia) result.importeEnergia = aiResult.importe_energia;
+            if (result.consumos.length === 0 && aiResult.consumos.length > 0) result.consumos = aiResult.consumos;
+            if (result.potencias.length === 0 && aiResult.potencias.length > 0) result.potencias = aiResult.potencias;
+            if (!result.impuestoElectrico && aiResult.impuesto_electrico) result.impuestoElectrico = aiResult.impuesto_electrico;
+            if (!result.iva && aiResult.iva) result.iva = aiResult.iva;
+            if (!result.alquilerContador && aiResult.alquiler_contador) result.alquilerContador = aiResult.alquiler_contador;
+            result.confianza = Math.max(result.confianza, aiResult.confianza);
+            result.advertencias.push('Datos completados con Gemini AI (confianza regex baja)');
+          }
+        } catch (aiErr: any) {
+          result.advertencias.push(`Gemini fallback fallido: ${aiErr.message}`);
+        }
+      }
+
       return res.json({
         success: true,
         data: result,
@@ -812,5 +853,65 @@ export async function parseBill(req: AuthRequest, res: Response, next: NextFunct
 
   } catch (error: any) {
     next(error);
+  }
+}
+
+// === FOTO DE FACTURA CON GEMINI VISION ===
+export async function parseBillPhoto(req: AuthRequest, res: Response, next: NextFunction): Promise<Response | void> {
+  try {
+    const file = req.file;
+    if (!file) return res.status(400).json({ error: 'No se ha subido ningún archivo' });
+
+    if (!env.GEMINI_API_KEY) {
+      // Limpiar archivo
+      fs.unlink(file.path, () => {});
+      return res.status(400).json({ error: 'La extracción por foto requiere GEMINI_API_KEY configurada' });
+    }
+
+    const imageBuffer = fs.readFileSync(file.path);
+    const mimeType = file.mimetype as string;
+
+    // Limpiar archivo temporal
+    fs.unlink(file.path, () => {});
+
+    const result = await extractEnergyBillFromImage(imageBuffer, mimeType);
+
+    // Convertir al formato ParsedBill para consistencia con el parser existente
+    return res.json({
+      success: true,
+      data: {
+        comercializadora: result.comercializadora,
+        cups: result.cups,
+        tarifa: result.tarifa,
+        periodoFacturacion: {
+          desde: result.periodo_desde,
+          hasta: result.periodo_hasta,
+          dias: result.dias,
+        },
+        potencias: result.potencias || [],
+        consumos: result.consumos || [],
+        preciosEnergia: result.precios_energia || [],
+        importePotencia: result.importe_potencia,
+        importeEnergia: result.importe_energia,
+        importeTotal: result.importe_total,
+        tieneReactiva: result.tiene_reactiva || false,
+        importeReactiva: null,
+        cosPhi: null,
+        energiaReactiva: null,
+        impuestoElectrico: result.impuesto_electrico,
+        iva: result.iva,
+        alquilerContador: result.alquiler_contador,
+        modalidad: result.modalidad,
+        confianza: result.confianza,
+        metodo: result.metodo,
+        camposExtraidos: Object.entries(result)
+          .filter(([k, v]) => v !== null && v !== undefined && !['metodo', 'confianza'].includes(k))
+          .map(([k]) => k),
+        advertencias: [],
+      },
+    });
+  } catch (err: any) {
+    logger.error('Error parseando foto de factura:', err);
+    return res.status(500).json({ error: err.message || 'Error procesando imagen' });
   }
 }

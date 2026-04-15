@@ -34,6 +34,14 @@ const envSchema = z.object({
   // Cifrado
   ENCRYPTION_KEY: z.string().min(16).default('dev-encryption-key-32-chars-ok!'),
 
+  // IA
+  GEMINI_API_KEY: z.string().optional().default(''),
+
+  // Gmail OAuth
+  GOOGLE_CLIENT_ID: z.string().optional().default(''),
+  GOOGLE_CLIENT_SECRET: z.string().optional().default(''),
+  GOOGLE_REDIRECT_URI: z.string().optional().default('http://localhost:3000/api/gmail/callback'),
+
   // SMTP
   SMTP_HOST: z.string().optional().default(''),
   SMTP_PORT: z.coerce.number().optional().default(587),

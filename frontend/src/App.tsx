@@ -11,8 +11,10 @@ import Calculadora from './pages/Calculadora';
 import EmailPage from './pages/Email';
 import Reportes from './pages/Reportes';
 import Configuracion from './pages/Configuracion';
+import Inbox from './pages/Inbox';
 import Layout from './pages/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import AgentPage from './pages/AgentPage';
 
 export default function App() {
   return (
@@ -48,10 +50,12 @@ export default function App() {
         {/* Herramientas */}
         <Route path="mapa" element={<Prospects defaultView="mapa" />} />
         <Route path="agenda" element={<Agenda />} />
+        <Route path="inbox" element={<Inbox />} />
         <Route path="emails" element={<EmailPage />} />
         <Route path="calculadora" element={<Calculadora />} />
         <Route path="reportes" element={<Reportes />} />
         <Route path="configuracion" element={<Configuracion />} />
+        <Route path="agente" element={<AgentPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

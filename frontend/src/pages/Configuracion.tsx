@@ -16,9 +16,12 @@ import {
   HiOutlineCheck,
   HiOutlineTrash,
   HiOutlineExclamation,
+  HiOutlineMail,
+  HiOutlineRefresh,
+  HiOutlineLink,
 } from 'react-icons/hi';
 
-type TabId = 'perfil' | 'empresa' | 'usuarios' | 'aplicacion';
+type TabId = 'perfil' | 'empresa' | 'usuarios' | 'aplicacion' | 'integraciones';
 
 interface ProfileForm {
   nombre: string;
@@ -172,7 +175,8 @@ export default function Configuracion() {
     { id: 'perfil', label: 'Mi perfil', icon: HiOutlineUser },
     { id: 'empresa', label: 'Empresa', icon: HiOutlineOfficeBuilding, adminOnly: true },
     { id: 'usuarios', label: 'Usuarios', icon: HiOutlineUsers, adminOnly: true },
-    { id: 'aplicacion', label: 'Aplicación', icon: HiOutlineCog },
+    { id: 'aplicacion', label: 'Aplicacion', icon: HiOutlineCog },
+    { id: 'integraciones', label: 'Integraciones', icon: HiOutlineLink },
   ];
 
   const visibleTabs = tabs.filter((t) => !t.adminOnly || isAdmin);
@@ -220,6 +224,9 @@ export default function Configuracion() {
           {activeTab === 'aplicacion' && (
             <TabAplicacion showToast={showToast} />
           )}
+          {activeTab === 'integraciones' && (
+            <TabIntegraciones showToast={showToast} />
+          )}
         </div>
       </div>
 
@@ -239,8 +246,8 @@ function TabPerfil({
   setUser,
   showToast,
 }: {
-  user: ReturnType<typeof useAuthStore>['user'];
-  setUser: (u: NonNullable<ReturnType<typeof useAuthStore>['user']>) => void;
+  user: import('../services/auth.service').User | null;
+  setUser: (u: import('../services/auth.service').User) => void;
   showToast: (msg: string, type?: 'success' | 'error') => void;
 }) {
   const [form, setForm] = useState<ProfileForm>({
@@ -283,7 +290,7 @@ function TabPerfil({
   const handleSaveProfile = async () => {
     setLoadingProfile(true);
     try {
-      const res = await api.put<{ success: boolean; data: typeof user }>('/users/profile', {
+      const res = await api.put<{ success: boolean; data: import('../services/auth.service').User }>('/users/profile', {
         nombre: form.nombre,
         apellidos: form.apellidos,
         telefono: form.telefono,
@@ -291,7 +298,7 @@ function TabPerfil({
         foto_url: form.foto_url,
       });
       if (res.data.success && res.data.data) {
-        setUser(res.data.data as NonNullable<ReturnType<typeof useAuthStore>['user']>);
+        setUser(res.data.data);
       }
       showToast('Perfil actualizado correctamente');
     } catch {
@@ -1048,15 +1055,207 @@ function TabAplicacion({ showToast }: { showToast: (msg: string, type?: 'success
       <div className="border-t border-gray-200 pt-6">
         <h2 className="text-base font-semibold text-gray-900 mb-1">Mantenimiento</h2>
         <p className="text-sm text-gray-500 mb-4">
-          Limpia los datos almacenados en el navegador sin cerrar tu sesión.
+          Limpia los datos almacenados en el navegador sin cerrar tu sesion.
         </p>
         <button
           onClick={handleClearCache}
           className="flex items-center gap-2 border border-red-300 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors"
         >
           <HiOutlineTrash className="w-4 h-4" />
-          Limpiar caché local
+          Limpiar cache local
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Interfaces Gmail ─────────────────────────────────────────────────────────
+
+interface GmailAccount {
+  id: string;
+  email: string;
+  activo: boolean;
+  ultima_sincronizacion: string | null;
+}
+
+interface GmailAccountsResponse {
+  success: boolean;
+  data: GmailAccount[];
+}
+
+interface GmailAuthResponse {
+  success: boolean;
+  data: { url: string };
+}
+
+function TabIntegraciones({ showToast }: { showToast: (msg: string, type?: 'success' | 'error') => void }) {
+  const [accounts, setAccounts] = useState<GmailAccount[]>([]);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const [disconnectingId, setDisconnectingId] = useState<string | null>(null);
+
+  const fetchAccounts = async () => {
+    setLoadingAccounts(true);
+    try {
+      const res = await api.get<GmailAccountsResponse>('/gmail/accounts');
+      setAccounts(res.data.data ?? []);
+    } catch {
+      // API may not exist yet or no accounts — treat as empty
+      setAccounts([]);
+    } finally {
+      setLoadingAccounts(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccounts();
+  }, []);
+
+  const handleConnect = async () => {
+    try {
+      const res = await api.get<GmailAuthResponse>('/gmail/auth');
+      if (res.data?.data?.url) {
+        window.location.href = res.data.data.url;
+      }
+    } catch {
+      showToast('No se pudo iniciar la autenticacion con Gmail', 'error');
+    }
+  };
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      await api.post('/gmail/sync');
+      showToast('Sincronizacion completada');
+      await fetchAccounts();
+    } catch {
+      showToast('Error al sincronizar', 'error');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const handleDisconnect = async (accountId: string) => {
+    if (!window.confirm('Desconectar esta cuenta de Gmail? Se dejaran de sincronizar los emails.')) return;
+    setDisconnectingId(accountId);
+    try {
+      await api.delete(`/gmail/accounts/${accountId}`);
+      showToast('Cuenta desconectada');
+      setAccounts((prev) => prev.filter((a) => a.id !== accountId));
+    } catch {
+      showToast('Error al desconectar la cuenta', 'error');
+    } finally {
+      setDisconnectingId(null);
+    }
+  };
+
+  const formatSyncDate = (dateStr: string | null): string => {
+    if (!dateStr) return 'Nunca';
+    const d = new Date(dateStr);
+    return d.toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+  };
+
+  return (
+    <div className="space-y-8 max-w-2xl">
+      <div>
+        <h2 className="text-base font-semibold text-gray-900 mb-1">Integraciones</h2>
+        <p className="text-sm text-gray-500">Conecta servicios externos para potenciar el CRM</p>
+      </div>
+
+      {/* Gmail Section */}
+      <div className="border border-gray-200 rounded-xl overflow-hidden">
+        <div className="flex items-center gap-3 px-5 py-4 bg-gray-50 border-b border-gray-200">
+          <div className="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
+            <HiOutlineMail className="w-5 h-5 text-red-600" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-gray-900">Gmail</p>
+            <p className="text-xs text-gray-500">Sincroniza emails con prospectos automaticamente</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {accounts.length > 0 && (
+              <button
+                onClick={handleSync}
+                disabled={syncing}
+                className="flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 px-3 py-1.5 rounded-lg hover:bg-gray-50 disabled:opacity-60 transition-colors"
+              >
+                <HiOutlineRefresh className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`} />
+                {syncing ? 'Sincronizando...' : 'Sincronizar ahora'}
+              </button>
+            )}
+            <button
+              onClick={handleConnect}
+              className="flex items-center gap-1.5 text-xs font-medium text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <HiOutlinePlus className="w-3.5 h-3.5" />
+              Conectar cuenta
+            </button>
+          </div>
+        </div>
+
+        <div className="px-5 py-4">
+          {loadingAccounts ? (
+            <div className="flex justify-center py-6">
+              <div className="animate-spin w-5 h-5 rounded-full border-2 border-red-500 border-t-transparent" />
+            </div>
+          ) : accounts.length === 0 ? (
+            <div className="text-center py-8">
+              <HiOutlineMail className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+              <p className="text-sm font-medium text-gray-500 mb-1">No hay cuentas de Gmail conectadas</p>
+              <p className="text-xs text-gray-400 mb-4">
+                Conecta tu cuenta para sincronizar emails con los prospectos del CRM.
+              </p>
+              <button
+                onClick={handleConnect}
+                className="inline-flex items-center gap-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                <HiOutlineMail className="w-4 h-4" />
+                Conectar Gmail
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {accounts.map((account) => (
+                <div
+                  key={account.id}
+                  className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-semibold text-red-600">
+                        {account.email.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{account.email}</p>
+                      <p className="text-xs text-gray-400">
+                        Ultima sync: {formatSyncDate(account.ultima_sincronizacion)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        account.activo
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-500'
+                      }`}
+                    >
+                      {account.activo ? 'Activa' : 'Inactiva'}
+                    </span>
+                    <button
+                      onClick={() => handleDisconnect(account.id)}
+                      disabled={disconnectingId === account.id}
+                      className="text-xs text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {disconnectingId === account.id ? 'Desconectando...' : 'Desconectar'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
