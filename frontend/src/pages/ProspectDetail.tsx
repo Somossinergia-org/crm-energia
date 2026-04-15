@@ -12,6 +12,7 @@ import ProspectServiciosPanel from '../components/prospects/ProspectServiciosPan
 import DocumentsPanel from '../components/prospects/DocumentsPanel';
 import ProspectAIPanel from '../components/ProspectAIPanel';
 import ConversacionTab from '../components/prospects/ConversacionTab';
+import BillUploader, { type ParsedBillData } from '../components/BillUploader';
 import { toast } from 'react-toastify';
 import {
   HiOutlinePhone,
@@ -54,6 +55,7 @@ export default function ProspectDetail() {
   const [showQuickLog, setShowQuickLog] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'historial' | 'conversacion' | 'ia'>('historial');
+  const [showBillUploader, setShowBillUploader] = useState(false);
 
   const { data: prospectData, isLoading } = useQuery({
     queryKey: ['prospect', id],
@@ -119,6 +121,35 @@ export default function ProspectDetail() {
       toast.success('Estado actualizado');
     },
   });
+
+  const billUpdateMutation = useMutation({
+    mutationFn: (data: Partial<Prospect>) => prospectsApi.update(id!, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prospect', id] });
+      queryClient.invalidateQueries({ queryKey: ['prospects'] });
+      toast.success('Datos energeticos actualizados desde la factura');
+    },
+    onError: () => toast.error('Error al actualizar datos energeticos'),
+  });
+
+  const handleBillDataFromProspect = (data: ParsedBillData) => {
+    const consumoAnual = data.consumos.length > 0
+      ? data.consumos.reduce((s, c) => s + c, 0) * 12
+      : undefined;
+
+    const updates: Partial<Prospect> = {};
+    if (data.cups) updates.cups = data.cups;
+    if (data.tarifa) updates.tarifa_actual = data.tarifa;
+    if (data.comercializadora) updates.comercializadora_actual = data.comercializadora;
+    if (data.potencias.length > 0) updates.potencia_p1_kw = data.potencias[0];
+    if (consumoAnual !== undefined && consumoAnual > 0) updates.consumo_anual_kwh = consumoAnual;
+    if (data.importeTotal !== null && data.importeTotal !== undefined) {
+      updates.gasto_mensual_estimado_eur = data.importeTotal;
+    }
+
+    billUpdateMutation.mutate(updates);
+    setShowBillUploader(false);
+  };
 
   if (isLoading) {
     return (
@@ -371,10 +402,24 @@ export default function ProspectDetail() {
           {/* Datos energeticos */}
           {hasEnergyData ? (
             <div className="card p-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                <HiOutlineLightningBolt className="w-4 h-4 text-amber-500" />
-                Datos energeticos
-              </h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <HiOutlineLightningBolt className="w-4 h-4 text-amber-500" />
+                  Datos energeticos
+                </h3>
+                <button
+                  onClick={() => setShowBillUploader(v => !v)}
+                  className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors font-medium"
+                >
+                  <HiOutlineDocumentText className="w-3.5 h-3.5" />
+                  {showBillUploader ? 'Cerrar' : 'Analizar factura'}
+                </button>
+              </div>
+              {showBillUploader && (
+                <div className="mb-3">
+                  <BillUploader onResult={handleBillDataFromProspect} compact />
+                </div>
+              )}
               <div className="space-y-2 text-sm">
                 {prospect.comercializadora_actual && (
                   <div className="flex justify-between">
@@ -440,13 +485,28 @@ export default function ProspectDetail() {
             </div>
           ) : (
             <div className="card p-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <HiOutlineLightningBolt className="w-4 h-4 text-gray-400" />
-                Datos energeticos
-              </h3>
-              <p className="text-xs text-gray-400 text-center py-3">
-                Sin datos energeticos. Edita el prospecto para anadir comercializadora, tarifa, consumo, etc.
-              </p>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <HiOutlineLightningBolt className="w-4 h-4 text-gray-400" />
+                  Datos energeticos
+                </h3>
+                <button
+                  onClick={() => setShowBillUploader(v => !v)}
+                  className="text-xs flex items-center gap-1 px-2 py-1 rounded bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors font-medium"
+                >
+                  <HiOutlineDocumentText className="w-3.5 h-3.5" />
+                  {showBillUploader ? 'Cerrar' : 'Analizar factura'}
+                </button>
+              </div>
+              {showBillUploader ? (
+                <div className="mt-2">
+                  <BillUploader onResult={handleBillDataFromProspect} compact />
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400 text-center py-3">
+                  Sin datos energeticos. Edita el prospecto o analiza una factura.
+                </p>
+              )}
             </div>
           )}
 

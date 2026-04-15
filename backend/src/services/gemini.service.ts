@@ -271,3 +271,118 @@ export interface DailyBriefing {
   top_prospectos: Array<{ id: string; nombre: string; motivo: string; score: number }>;
   stats_hoy: { pipeline_activo: number; emails_pendientes: number; visitas_hoy: number };
 }
+
+// ── 5. EXTRACCIÓN DE FACTURAS ELÉCTRICAS CON IA ───────────────────────────
+export interface BillExtraction {
+  comercializadora: string | null;
+  cups: string | null;
+  tarifa: string | null;
+  periodo_desde: string | null;
+  periodo_hasta: string | null;
+  dias: number | null;
+  potencias: number[];
+  consumos: number[];
+  precios_energia: number[];
+  importe_potencia: number | null;
+  importe_energia: number | null;
+  importe_total: number | null;
+  impuesto_electrico: number | null;
+  iva: number | null;
+  alquiler_contador: number | null;
+  tiene_reactiva: boolean;
+  modalidad: string | null;
+  confianza: number;
+  metodo: 'regex' | 'gemini' | 'gemini-vision';
+}
+
+export async function extractEnergyBillFromText(pdfText: string): Promise<BillExtraction> {
+  if (!env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY no configurada');
+
+  const prompt = `Eres un experto en facturas de electricidad españolas. Extrae los datos estructurados de este texto de factura eléctrica española.
+
+TEXTO DE FACTURA:
+${pdfText.slice(0, 8000)}
+
+Responde SOLO con JSON válido, sin markdown, con esta estructura exacta:
+{
+  "comercializadora": "nombre o null",
+  "cups": "ES seguido de dígitos o null",
+  "tarifa": "2.0TD o 3.0TD o 6.1TD u otra o null",
+  "periodo_desde": "DD/MM/YYYY o null",
+  "periodo_hasta": "DD/MM/YYYY o null",
+  "dias": número entero o null,
+  "potencias": [número kW por periodo, puede estar vacío],
+  "consumos": [número kWh por periodo, puede estar vacío],
+  "precios_energia": [EUR/kWh por periodo, puede estar vacío],
+  "importe_potencia": número EUR o null,
+  "importe_energia": número EUR o null,
+  "importe_total": número EUR total a pagar o null,
+  "impuesto_electrico": número EUR o null,
+  "iva": número EUR (importe del IVA, no el porcentaje) o null,
+  "alquiler_contador": número EUR o null,
+  "tiene_reactiva": true o false,
+  "modalidad": "fijo" o "indexado" o null
+}`;
+
+  const raw = await safeGenerate(prompt);
+  const clean = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+  const data = JSON.parse(clean);
+
+  // Calcular confianza basada en campos extraídos
+  const camposClave = ['comercializadora', 'cups', 'tarifa', 'importe_total', 'consumos'];
+  const extraidos = camposClave.filter(c => {
+    const v = data[c];
+    return v !== null && v !== undefined && (Array.isArray(v) ? v.length > 0 : true);
+  });
+  const confianza = Math.round((extraidos.length / camposClave.length) * 100);
+
+  return { ...data, confianza, metodo: 'gemini' };
+}
+
+export async function extractEnergyBillFromImage(imageBuffer: Buffer, mimeType: string): Promise<BillExtraction> {
+  if (!env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY no configurada');
+
+  const client = new GoogleGenerativeAI(env.GEMINI_API_KEY!);
+  const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+  const prompt = `Eres un experto en facturas de electricidad españolas. Analiza esta imagen de factura eléctrica y extrae todos los datos.
+
+Responde SOLO con JSON válido, sin markdown, con esta estructura exacta:
+{
+  "comercializadora": "nombre o null",
+  "cups": "ES seguido de dígitos o null",
+  "tarifa": "2.0TD o 3.0TD o 6.1TD u otra o null",
+  "periodo_desde": "DD/MM/YYYY o null",
+  "periodo_hasta": "DD/MM/YYYY o null",
+  "dias": número entero o null,
+  "potencias": [número kW por periodo],
+  "consumos": [número kWh por periodo],
+  "precios_energia": [EUR/kWh por periodo],
+  "importe_potencia": número EUR o null,
+  "importe_energia": número EUR o null,
+  "importe_total": número EUR total a pagar o null,
+  "impuesto_electrico": número EUR o null,
+  "iva": número EUR o null,
+  "alquiler_contador": número EUR o null,
+  "tiene_reactiva": true o false,
+  "modalidad": "fijo" o "indexado" o null
+}`;
+
+  const result = await model.generateContent([
+    { inlineData: { mimeType, data: imageBuffer.toString('base64') } },
+    { text: prompt },
+  ]);
+
+  const raw = result.response.text();
+  const clean = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+  const data = JSON.parse(clean);
+
+  const camposClave = ['comercializadora', 'cups', 'tarifa', 'importe_total', 'consumos'];
+  const extraidos = camposClave.filter(c => {
+    const v = data[c];
+    return v !== null && v !== undefined && (Array.isArray(v) ? v.length > 0 : true);
+  });
+  const confianza = Math.round((extraidos.length / camposClave.length) * 100);
+
+  return { ...data, confianza, metodo: 'gemini-vision' };
+}
