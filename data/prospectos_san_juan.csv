@@ -1,0 +1,83 @@
+nombre_negocio;nombre_contacto;categoria;telefono_movil;telefono_fijo;email;direccion;municipio;provincia;rating_google;zona_id;notas
+Academia Isa San Juan;;academia;674688833;;email;C/Dr.Gadea 8;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Academia Reva;;academia;665388658;;email;C/Dr.Gadea 7;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Academia Rayuela;;academia;658554208;;email;C/Pintor Baeza 4;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Academia San Juan;;academia;651984830;;email;C/Capitan Juan Marti 23;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Idiomas Yumi;;academia;;966371827;email;C/Dr.Severo Ochoa 10;San Juan de Alicante;Alicante;4.3;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Taiyo Japones;;restaurante;865685197;;email;Av.la Rambla s/n;San Juan de Alicante;Alicante;4.4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Restaurante japones/sushi
+Autoescuela La Rambla;;autoescuela;;965655754;email;Av.la Rambla 42;San Juan de Alicante;Alicante;4.1;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Autoescuela Tabarka Pueblo;;autoescuela;611968141;;email;Av.Mutxamel 1;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Thegarciastyle Barber;;barberia;649440105;;email;C/Major 9;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Levante San Juan;;clinica_salud;675193969;;email;Av.Musico A.Climent 2;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Dra. Silvia Carrillo Clinica;;clinica_salud;682519130;;email;Av.Comtat de Fabraquer 150;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Policlinica San Juan;;clinica_salud;;965656648;email;C/Tomas Capelo 5;San Juan de Alicante;Alicante;3.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Dental Garcia Rocamora;;dental;;966296780;email;Av.la Rambla 49;San Juan de Alicante;Alicante;4.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Aura Care Dental;;dental;660988393;;email;C/Jaume I 16;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Dental Javier Arroyo;;dental;;965651523;email;C/l'Ordana 8;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Dental San Juan;;dental;;966374490;email;C/Dr.Pedro Herrero 4;San Juan de Alicante;Alicante;4.4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Dental Dra. de la Fuente;;dental;611406950;;email;C/Cervantes 22;San Juan de Alicante;Alicante;4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+DonDeporte / Stadior;;deporte;;965940500;email;Av.la Rambla 43;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Tienda deporte y surf
+Electro JJ San Juan;;electrodomesticos;;965940209;email;C/Jaume I 17;San Juan de Alicante;Alicante;4.4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Sapphira Prive Beauty;;estetica_spa;;865551354;email;Av.Diagonal 4b;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Be Concept;;estetica_spa;643589689;;email;C/Pintor Baeza 2;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Estetica Desi;;estetica_spa;;966372526;email;C/Dr.Pedro Herrero 4;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Bioestetic;;estetica_spa;633217194;;email;C/Dr.Severo Ochoa 6;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Beauty Dreams Aesthetic;;estetica_spa;677328306;;email;C/Dr.Severo Ochoa 8;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Cafune Sensaciones;;estetica_spa;;865528071;email;C/Dr.Van Der Hofstad 13;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Farmacia Maigmona;;farmacia;;965650371;email;C/la Maigmona 11;San Juan de Alicante;Alicante;4.3;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Ferreteria Garcia;;ferreteria;;965653395;email;C/del Mercat 16;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Ferreteria Ripoll;;ferreteria;;965653746;email;C/Mossen Pedro Mena 30;San Juan de Alicante;Alicante;4.3;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+HFC Fisioterapia Lledo;;fisioterapia;;965942473;email;Av.Diagonal 4b;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Clinica Sevila Fisio;;fisioterapia;;;email;C/Dr.Van Der Hofstad;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Sin telefono
+Clinica Fisio MaBel;;fisioterapia;623218233;;email;C/Pintor Baeza 17;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+TOMAJARDIN Floristas;;floristeria;689567505;;email;Placa Constitucio 3;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Events La Tardor;;floristeria;;965656470;email;C/del Mercat 22;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Flores y Plantas Gloria;;floristeria;;965654047;email;Av.la Rambla 57;San Juan de Alicante;Alicante;4.4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Las Flores de Aurora;;floristeria;697210532;;email;C/Notario Montesinos 17;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+SAN JUAN Gestores;;gestoria;;966146237;email;C/Jaume I 35;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Burger Chef;;hamburgueseria;640554170;;email;C/Notario Montesinos 23;San Juan de Alicante;Alicante;4.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Yummy Place Sant Joan;;hamburgueseria;;865822312;email;Plaza Dr.Antonio Rico;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Hotel Villa San Juan;;hotel;;965653954;email;Placa Constitucio 6;San Juan de Alicante;Alicante;4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+PCBOX Sant Joan;;informatica;;965943767;email;C/del Mercat 13;San Juan de Alicante;Alicante;4.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Neocom Informatica;;informatica;636104732;;email;C/Notario Montesinos 11;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Inmobiliaria Nucleo;;inmobiliaria;;865885752;email;C/Tomas Capelo 8;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Habitar Inmobiliaria;;inmobiliaria;;965657565;email;C/Dr.Gadea 13;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Inmobiliaria JPG;;inmobiliaria;;965940241;email;Av.de la Diagonal 6;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Inmobiliaria Cava;;inmobiliaria;;965657965;email;C/Jaume I 20;San Juan de Alicante;Alicante;4.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Inmobiliaria Sala;;inmobiliaria;650663345;;email;C/Pintor Baeza 35;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Fincas San Juan;;inmobiliaria;;965941360;email;C/Mossen Pedro Mena 18;San Juan de Alicante;Alicante;4.4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Lavanderia La Rosa Blanca;;lavanderia;;965655797;email;C/Dr.Severo Ochoa 3;San Juan de Alicante;Alicante;4.1;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Los dulces de Palmira;;panaderia;610875400;;email;C/Dr.Gadea s/n;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Confiteria La Guinda;;panaderia;654261022;;email;C/Jaume I 24;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+La Pastisseria de Sant Joan;;panaderia;627026906;;email;C/San Antonio 113;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+La Pastisserie de Marguerite;;panaderia;;865529841;email;Plaza Dr.Antonio Rico;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Magic Peluqueros;;peluqueria;;865681225;email;C/del Salt 2;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Peluqueria Santiago;;peluqueria;;965654633;email;C/del Mercat 19;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Ana Alvarez Beauty Concept;;peluqueria;;865835419;email;C/Pintor Baeza 12;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Pizzeria Nando;;pizzeria;;966372546;email;C/Dr.Severo Ochoa 6;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+La Quinteria;;restaurante;;965652294;email;C/Dr.Gadea 17;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Almantoni;;restaurante;;966837554;email;Av.la Rambla 5;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Me gusta Sant Joan;;restaurante;;966389349;email;C/Dr.San Miguel 3;San Juan de Alicante;Alicante;4.3;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+THUYA Ropa;;tienda_ropa;688796942;;email;Av.la Rambla 56;San Juan de Alicante;Alicante;4.4;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Kokoa Moda;;tienda_ropa;688796954;;email;C/Jaume I 7;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Karay Moda;;tienda_ropa;;965940592;email;C/Jaume I 6;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+AXA Seguros Marti;;seguros;;965655121;email;C/l'Ordana 8;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+AXA Barcza Seguros;;seguros;;965942101;email;C/Ramon Campoamor 1;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Aracil y Pastor Seguros;;seguros;;966372760;email;Av.la Rambla 27;San Juan de Alicante;Alicante;4.8;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Meridiano Seguros;;seguros;;965939496;email;C/del Mercat 12;San Juan de Alicante;Alicante;4.2;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Reale Seguros;;seguros;;966374840;email;C/Tomas Capelo 7;San Juan de Alicante;Alicante;5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Talleres San Juan;;taller;;965658183;email;C/Notario Montesinos 23;San Juan de Alicante;Alicante;4.1;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Auto Center San Juan;;taller;;965168221;email;C/Dr.Ivorra 8;San Juan de Alicante;Alicante;4.6;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Taller Energy Motor;;taller;677680354;;email;Pje.de Soro 4;San Juan de Alicante;Alicante;4.3;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Mandonna Sant Joan;;bar;644632826;;email;C/del Mercat 14;San Juan de Alicante;Alicante;4.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Bar de tapas
+Chico Calla;;bar;617923253;;email;Av.la Rambla 39;San Juan de Alicante;Alicante;4.2;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Bar de tapas
+HANAMI Cocktail Garden;;bar;691484522;;email;Av.la Rambla 9;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Cocktail bar
+LA CASETA coffee-bar;;cafeteria;;;email;Av.la Rambla 2;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Sin telefono. Coffee bar
+Ohana Cocktails & Food;;bar;601980786;;email;C/Dr.San Miguel 3;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Cocktails y comida
+Cerveceria L'embolic;;bar;;966389031;email;C/Dr.Gadea 46;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Cerveceria
+Clinica Vet. 7 Vidas;;veterinaria;;965941275;email;C/Dr.Van Der Hofstad 2;San Juan de Alicante;Alicante;4.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Medivet San Juan;;veterinaria;;965940664;email;C/la Moleta 24;San Juan de Alicante;Alicante;4.5;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Vet Wecan De Carreres;;veterinaria;;965658359;email;Av.Mutxamel 1;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Optica Luz;;optica;;965652702;email;C/del Mercado 8;San Juan de Alicante;Alicante;4.9;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Optica Lloixa;;optica;;965659873;email;C/Jaume I 9;San Juan de Alicante;Alicante;4.3;e6bcf795-4389-44e0-a973-d5ac62fd8c63;
+Centro Optico Diagonal;;optica;;;email;Av.de la Diagonal;San Juan de Alicante;Alicante;3.7;e6bcf795-4389-44e0-a973-d5ac62fd8c63;Sin telefono

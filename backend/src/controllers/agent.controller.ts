@@ -6,7 +6,7 @@ import { query } from '../config/database';
 export async function agentChat(req: Request, res: Response) {
   try {
     const userId = (req as any).user.id;
-    const userRole = (req as any).user.rol;
+    const userRole = (req as any).user.role || (req as any).user.rol;
     const { message, history = [] } = req.body as { message: string; history: ChatMessage[] };
 
     if (!message?.trim()) {

@@ -46,7 +46,7 @@ export async function scoreProspect(req: Request, res: Response) {
 export async function scoreBulk(req: Request, res: Response) {
   try {
     const userId = (req as any).user.id;
-    const role = (req as any).user.rol;
+    const role = (req as any).user.role || (req as any).user.rol;
 
     const whereClause = role === 'admin' ? '' : 'WHERE asignado_a = $1';
     const params = role === 'admin' ? [] : [userId];
@@ -178,7 +178,7 @@ export async function generateEmailAI(req: Request, res: Response) {
 export async function getDailyBriefing(req: Request, res: Response) {
   try {
     const userId = (req as any).user.id;
-    const role = (req as any).user.rol;
+    const role = (req as any).user.role || (req as any).user.rol;
 
     const whereUser = role === 'admin' ? '' : 'AND p.asignado_a = $1';
     const params = role === 'admin' ? [] : [userId];
@@ -191,7 +191,7 @@ export async function getDailyBriefing(req: Request, res: Response) {
                p.ahorro_estimado_eur
         FROM prospects p
         LEFT JOIN prospect_scores ps ON ps.prospect_id = p.id
-        WHERE p.estado NOT IN ('cliente', 'perdido', 'descartado') ${whereUser}
+        WHERE p.estado NOT IN ('cliente','contrato_firmado','perdido','descartado','rechazado') ${whereUser}
         ORDER BY ps.score_total DESC NULLS LAST, p.updated_at DESC
         LIMIT 5
       `, params),
@@ -200,7 +200,7 @@ export async function getDailyBriefing(req: Request, res: Response) {
       query(`
         SELECT COUNT(*) as total
         FROM prospects p
-        WHERE p.estado NOT IN ('cliente', 'perdido', 'descartado') ${whereUser}
+        WHERE p.estado NOT IN ('cliente','contrato_firmado','perdido','descartado','rechazado') ${whereUser}
       `, params),
 
       // Visitas de hoy

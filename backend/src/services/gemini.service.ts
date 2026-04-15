@@ -122,7 +122,7 @@ export async function scoreLead(prospect: ProspectData): Promise<LeadScore> {
   if (intentos >= 3) scoreActividad += 10;
   else if (intentos >= 1) scoreActividad += 5;
   if (prospect.temperatura === 'caliente') scoreActividad += 10;
-  else if (prospect.temperatura === 'templado') scoreActividad += 5;
+  else if (prospect.temperatura === 'tibio' || prospect.temperatura === 'templado') scoreActividad += 5;
   if (prospect.fecha_ultimo_contacto) {
     const diasDesde = Math.ceil((Date.now() - new Date(prospect.fecha_ultimo_contacto).getTime()) / 86400000);
     if (diasDesde <= 7) scoreActividad += 5;

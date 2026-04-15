@@ -6,7 +6,7 @@ import { env } from '../config/env';
 // ── Helper ─────────────────────────────────────────────────────────────────
 function userFilter(req: Request): { where: string; params: any[] } {
   const user = (req as any).user;
-  if (user.rol === 'admin') return { where: '', params: [] };
+  if (user.role === 'admin' || user.rol === 'admin') return { where: '', params: [] };
   return { where: 'AND asignado_a = $1', params: [user.id] };
 }
 
@@ -18,16 +18,16 @@ export async function getKPIs(req: Request, res: Response) {
 
     const [pipeline, clientes, conv30d, conv7d, ahorroTotal, emailStats] = await Promise.all([
       query(`SELECT COUNT(*) as total, COALESCE(SUM(ahorro_estimado_eur),0) as ahorro_potencial
-             FROM prospects WHERE estado NOT IN ('cliente','perdido','descartado') ${where}`, p),
+             FROM prospects WHERE estado NOT IN ('cliente','contrato_firmado','perdido','descartado','rechazado') ${where}`, p),
       query(`SELECT COUNT(*) as total, COALESCE(SUM(ahorro_estimado_eur),0) as ahorro_generado,
                     COALESCE(SUM(gasto_mensual_estimado_eur),0) as gasto_gestionado
-             FROM prospects WHERE estado='cliente' ${where}`, p),
+             FROM prospects WHERE estado IN ('cliente','contrato_firmado') ${where}`, p),
       query(`SELECT COUNT(*) as total FROM prospects
-             WHERE estado='cliente' AND fecha_conversion >= NOW()-INTERVAL '30 days' ${where}`, p),
+             WHERE estado IN ('cliente','contrato_firmado') AND fecha_conversion >= NOW()-INTERVAL '30 days' ${where}`, p),
       query(`SELECT COUNT(*) as total FROM prospects
-             WHERE estado='cliente' AND fecha_conversion >= NOW()-INTERVAL '7 days' ${where}`, p),
+             WHERE estado IN ('cliente','contrato_firmado') AND fecha_conversion >= NOW()-INTERVAL '7 days' ${where}`, p),
       query(`SELECT COALESCE(SUM(ahorro_estimado_eur),0) as total FROM prospects
-             WHERE estado='cliente' ${where}`, p),
+             WHERE estado IN ('cliente','contrato_firmado') ${where}`, p),
       query(`SELECT COUNT(*) as enviados,
                     COUNT(*) FILTER (WHERE abierto_en IS NOT NULL) as abiertos,
                     COUNT(*) FILTER (WHERE clicked_en IS NOT NULL) as clicks
@@ -77,8 +77,8 @@ export async function getMonthlyEvolution(req: Request, res: Response) {
         TO_CHAR(DATE_TRUNC('month', created_at), 'Mon YY') as mes,
         DATE_TRUNC('month', created_at) as mes_date,
         COUNT(*) as nuevos,
-        COUNT(*) FILTER (WHERE estado = 'cliente') as convertidos,
-        COALESCE(SUM(ahorro_estimado_eur) FILTER (WHERE estado='cliente'), 0) as ahorro
+        COUNT(*) FILTER (WHERE estado IN ('cliente','contrato_firmado')) as convertidos,
+        COALESCE(SUM(ahorro_estimado_eur) FILTER (WHERE estado IN ('cliente','contrato_firmado')), 0) as ahorro
       FROM prospects
       WHERE created_at >= NOW() - INTERVAL '6 months' ${where}
       GROUP BY DATE_TRUNC('month', created_at)
@@ -115,7 +115,7 @@ export async function getTopMunicipios(req: Request, res: Response) {
     const p = [...params];
     const result = await query(`
       SELECT municipio, COUNT(*) as total,
-             COUNT(*) FILTER (WHERE estado='cliente') as clientes,
+             COUNT(*) FILTER (WHERE estado IN ('cliente','contrato_firmado')) as clientes,
              COALESCE(SUM(ahorro_estimado_eur), 0) as ahorro_potencial
       FROM prospects
       WHERE municipio IS NOT NULL AND municipio != '' ${where}
@@ -139,9 +139,9 @@ export async function getRadarOportunidades(req: Request, res: Response) {
              EXTRACT(DAY FROM NOW() - p.fecha_ultimo_contacto)::int as dias_sin_contacto
       FROM prospects p
       LEFT JOIN prospect_scores ps ON ps.prospect_id = p.id
-      WHERE p.estado NOT IN ('cliente','perdido','descartado')
+      WHERE p.estado NOT IN ('cliente','contrato_firmado','perdido','descartado','rechazado')
       AND (p.fecha_ultimo_contacto IS NULL OR p.fecha_ultimo_contacto < NOW() - INTERVAL '5 days')
-      AND (p.temperatura IN ('caliente','templado') OR COALESCE(ps.score_total,0) >= 50) ${where}
+      AND (p.temperatura IN ('caliente','tibio','templado') OR COALESCE(ps.score_total,0) >= 20) ${where}
       ORDER BY ps.score_total DESC NULLS LAST, p.ahorro_estimado_eur DESC NULLS LAST
       LIMIT 8
     `, p);
@@ -162,8 +162,8 @@ export async function getPrediccionCierres(req: Request, res: Response) {
              ps.probabilidad_cierre
       FROM prospects p
       LEFT JOIN prospect_scores ps ON ps.prospect_id = p.id
-      WHERE p.estado NOT IN ('cliente','perdido','descartado')
-      AND COALESCE(ps.probabilidad_cierre, 0) >= 50 ${where}
+      WHERE p.estado NOT IN ('cliente','contrato_firmado','perdido','descartado','rechazado')
+      AND COALESCE(ps.score_total, 0) >= 20 ${where}
       ORDER BY ps.probabilidad_cierre DESC NULLS LAST LIMIT 5
     `, p);
     return res.json({ success: true, data: result.rows });
@@ -200,8 +200,8 @@ export async function getWeeklyReport(req: Request, res: Response) {
     const [nuevos, convertidos, ahorro, actividad] = await Promise.all([
       query(`SELECT COUNT(*) as total FROM prospects WHERE created_at >= NOW()-INTERVAL '7 days' ${where}`, p),
       query(`SELECT COUNT(*) as total, COALESCE(SUM(ahorro_estimado_eur),0) as ahorro
-             FROM prospects WHERE estado='cliente' AND fecha_conversion >= NOW()-INTERVAL '7 days' ${where}`, p),
-      query(`SELECT COALESCE(SUM(ahorro_estimado_eur),0) as total FROM prospects WHERE estado='cliente' ${where}`, p),
+             FROM prospects WHERE estado IN ('cliente','contrato_firmado') AND fecha_conversion >= NOW()-INTERVAL '7 days' ${where}`, p),
+      query(`SELECT COALESCE(SUM(ahorro_estimado_eur),0) as total FROM prospects WHERE estado IN ('cliente','contrato_firmado') ${where}`, p),
       query(`SELECT tipo, COUNT(*) as total FROM contact_history
              WHERE created_at >= NOW()-INTERVAL '7 days'
              GROUP BY tipo ORDER BY total DESC`, []).catch(() => ({ rows: [] })),
@@ -318,7 +318,7 @@ export async function exportExcel(req: Request, res: Response) {
     const wsKPI = wb.addWorksheet('Resumen KPIs');
     wsKPI.addRow(['Métrica', 'Valor']);
     wsKPI.addRow(['Total prospectos', prospects.rows.length]);
-    wsKPI.addRow(['Clientes activos', prospects.rows.filter((r: any) => r.estado === 'cliente').length]);
+    wsKPI.addRow(['Clientes activos', prospects.rows.filter((r: any) => ['cliente','contrato_firmado'].includes(r.estado)).length]);
     wsKPI.addRow(['Ahorro potencial mes €', prospects.rows.reduce((s: number, r: any) => s + parseFloat(r.ahorro_estimado_eur || 0), 0).toFixed(2)]);
     wsKPI.addRow(['Generado', new Date().toLocaleString('es-ES')]);
 
@@ -339,9 +339,9 @@ export async function exportPDF(req: Request, res: Response) {
     const p = [...params];
 
     const [kpis, topProspectos] = await Promise.all([
-      query(`SELECT COUNT(*) FILTER (WHERE estado NOT IN ('cliente','perdido','descartado')) as pipeline,
-                    COUNT(*) FILTER (WHERE estado='cliente') as clientes,
-                    COALESCE(SUM(ahorro_estimado_eur) FILTER (WHERE estado='cliente'),0) as ahorro_mes
+      query(`SELECT COUNT(*) FILTER (WHERE estado NOT IN ('cliente','contrato_firmado','perdido','descartado','rechazado')) as pipeline,
+                    COUNT(*) FILTER (WHERE estado IN ('cliente','contrato_firmado')) as clientes,
+                    COALESCE(SUM(ahorro_estimado_eur) FILTER (WHERE estado IN ('cliente','contrato_firmado')),0) as ahorro_mes
              FROM prospects ${where ? `WHERE ${where.replace('AND ', '')}` : ''}`, params),
       query(`SELECT nombre_negocio, estado, temperatura, ahorro_estimado_eur, municipio,
                     COALESCE(ps.score_total,0) as score
