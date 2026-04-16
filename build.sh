@@ -3,10 +3,6 @@ set -e
 
 echo "🔨 Building CRM Energía (Backend + Frontend)..."
 
-# Install root dependencies
-echo "📦 Installing root dependencies..."
-npm ci --legacy-peer-deps
-
 # Build backend TypeScript
 echo "⚙️  Building backend..."
 cd backend

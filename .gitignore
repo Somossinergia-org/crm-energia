@@ -20,3 +20,10 @@ coverage/
 
 .vercel
 .claude/
+
+# Local development helpers
+backend/Dockerfile.migrations
+backend/Dockerfile.test
+backend/migrate-with-seed.js
+backend/test-db.js
+deploy-cloud-run.ps1
