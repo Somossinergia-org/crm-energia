@@ -103,3 +103,4 @@ curl -X POST https://crm-energia-api-prod.railway.app/api/auth/login \
 - Con CLI: 5 minutos
 
 **¿Listo?** Ve a https://railway.app y empieza! 🚀
+# Backend fix - Thu Apr 16 03:38:26     2026
