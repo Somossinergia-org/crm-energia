@@ -3,16 +3,22 @@ import { env } from './env';
 import { logger } from '../utils/logger';
 
 // Pool de conexiones PostgreSQL
-export const pool = new Pool({
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  database: env.DB_NAME,
-  user: env.DB_USER,
-  password: env.DB_PASSWORD,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+// Usa DATABASE_URL si está disponible (para Cloud Run/Vercel)
+// Si no, construye la URL desde las variables individuales (para desarrollo local)
+const poolConfig = process.env.DATABASE_URL
+  ? { connectionString: process.env.DATABASE_URL, max: 20 }
+  : {
+      host: env.DB_HOST,
+      port: env.DB_PORT,
+      database: env.DB_NAME,
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    };
+
+export const pool = new Pool(poolConfig);
 
 // Evento de conexión
 pool.on('connect', () => {
