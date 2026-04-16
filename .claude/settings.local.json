@@ -78,7 +78,9 @@
       "mcp__Claude_in_Chrome__tabs_close_mcp",
       "Bash(docker-compose exec:*)",
       "Bash(vercel --version)",
-      "Bash(chmod +x \"C:\\\\Users\\\\orihu\\\\OneDrive\\\\Escritorio\\\\crm nuevo\\\\RUN_MIGRATIONS.sh\")"
+      "Bash(chmod +x \"C:\\\\Users\\\\orihu\\\\OneDrive\\\\Escritorio\\\\crm nuevo\\\\RUN_MIGRATIONS.sh\")",
+      "Bash(export DATABASE_URL='postgresql://postgres:s30251310S@db.pwevqqbxiesmlkqyltwq.supabase.co:5432/postgres')",
+      "Bash(node run-migrations.js)"
     ]
   }
 }
