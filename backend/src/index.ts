@@ -26,6 +26,7 @@ import aiRoutes from './routes/ai.routes';
 import gmailRoutes from './routes/gmail.routes';
 import agentRoutes from './routes/agent.routes';
 import analyticsRoutes from './routes/analytics.routes';
+import salesRoutes from './routes/sales.routes';
 import path from 'path';
 
 const app = express();
@@ -64,6 +65,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/gmail', gmailRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/sales', salesRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
 // Health check
