@@ -1,10 +1,8 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-// Import Express app from compiled backend
-import app from '../backend/dist/index';
+// Import the compiled backend Express app
+const app = require('../backend/dist/index').default;
 
 // Export as Vercel serverless function
-export default (req: VercelRequest, res: VercelResponse) => {
+module.exports = (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || 'https://crm-energia.vercel.app');
@@ -21,5 +19,5 @@ export default (req: VercelRequest, res: VercelResponse) => {
   }
 
   // Pass request/response to Express app handler
-  app(req as any, res as any);
+  app(req, res);
 };
