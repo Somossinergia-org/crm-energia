@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD
+    ? 'https://crm-energia-api-244234608683.europe-west1.run.app/api'
+    : '/api');
 
 const api = axios.create({
   baseURL: API_URL,

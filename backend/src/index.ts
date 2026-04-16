@@ -5,13 +5,14 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import { env } from './config/env';
 import { testConnection } from './config/database';
-import { connectRedis } from './config/redis';
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
 import { generalLimiter } from './middleware/rateLimiter';
 
 // Rutas
+import adminRoutes from './routes/admin.routes';
 import authRoutes from './routes/auth.routes';
+import debugRoutes from './routes/debug.routes';
 import usersRoutes from './routes/users.routes';
 import prospectsRoutes from './routes/prospects.routes';
 import zonesRoutes from './routes/zones.routes';
@@ -30,6 +31,7 @@ import salesRoutes from './routes/sales.routes';
 import path from 'path';
 
 const app = express();
+app.set('trust proxy', true);
 
 // ── Middleware global ──
 app.use(helmet());
@@ -50,7 +52,11 @@ app.use(morgan('short', {
 }));
 
 // ── Rutas API ──
+app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
+if (env.NODE_ENV !== 'production') {
+  app.use('/api/debug', debugRoutes);
+}
 app.use('/api/users', usersRoutes);
 app.use('/api/prospects', prospectsRoutes);
 app.use('/api/zones', zonesRoutes);
@@ -110,12 +116,6 @@ async function start() {
       logger.warn('⚠️  Error conectando a PostgreSQL:', err);
     }
 
-    try {
-      await connectRedis();
-      logger.info('✅ Redis conectado');
-    } catch (err) {
-      logger.warn('⚠️  Redis no disponible:', err);
-    }
   })();
 
   return server;

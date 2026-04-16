@@ -162,12 +162,12 @@ export async function revokeAllSessions(userId: string): Promise<void> {
 export async function logActivity(
   userId: string,
   action: string,
-  details: string = '',
+  description: string = '',
   ip: string = ''
 ): Promise<void> {
   await query(
-    `INSERT INTO activity_log (user_id, action, details, ip_address)
+    `INSERT INTO activity_log (user_id, action, description, ip_address)
      VALUES ($1, $2, $3, $4)`,
-    [userId, action, details, ip]
+    [userId, action, description, ip]
   );
 }

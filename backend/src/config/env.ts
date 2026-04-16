@@ -20,11 +20,6 @@ const envSchema = z.object({
   DB_USER: z.string().default('crm_user'),
   DB_PASSWORD: z.string().default('crm_password_segura_2024'),
 
-  // Redis
-  REDIS_HOST: z.string().default('localhost'),
-  REDIS_PORT: z.coerce.number().default(6379),
-  REDIS_PASSWORD: z.string().optional().default(''),
-
   // JWT
   JWT_SECRET: z.string().min(10),
   JWT_REFRESH_SECRET: z.string().min(10),
