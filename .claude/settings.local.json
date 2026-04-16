@@ -77,7 +77,8 @@
       "mcp__Claude_in_Chrome__read_network_requests",
       "mcp__Claude_in_Chrome__tabs_close_mcp",
       "Bash(docker-compose exec:*)",
-      "Bash(vercel --version)"
+      "Bash(vercel --version)",
+      "Bash(chmod +x \"C:\\\\Users\\\\orihu\\\\OneDrive\\\\Escritorio\\\\crm nuevo\\\\RUN_MIGRATIONS.sh\")"
     ]
   }
 }
