@@ -1,0 +1,9 @@
+{
+  "name": "crm-energia-monorepo",
+  "version": "1.0.0",
+  "description": "CRM para comerciales de energía",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install --legacy-peer-deps && npm run build"
+  }
+}
