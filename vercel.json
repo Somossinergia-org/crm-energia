@@ -1,9 +1,5 @@
 {
-  "projects": {
-    "frontend": {
-      "name": "crm-energia",
-      "buildCommand": "npm install --legacy-peer-deps && npm run build",
-      "outputDirectory": "dist"
-    }
-  }
+  "framework": "vite",
+  "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "frontend/dist"
 }
