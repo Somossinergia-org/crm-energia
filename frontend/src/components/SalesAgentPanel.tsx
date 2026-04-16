@@ -15,7 +15,6 @@ import {
 
 interface Props {
   prospectId: string;
-  prospectName: string;
   temperatura?: string;
   onCallAction?: () => void;
   onEmailAction?: (email: string) => void;
@@ -101,7 +100,6 @@ const tempBadgeColor = {
 
 export default function SalesAgentPanel({
   prospectId,
-  prospectName,
   temperatura,
   onCallAction,
   onEmailAction,

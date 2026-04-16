@@ -688,12 +688,14 @@ export default function ProspectDetail() {
           {activeTab === 'ventas' && (
             <SalesAgentPanel
               prospectId={prospect.id}
-              prospectName={prospect.nombre_negocio}
               temperatura={prospect.temperatura}
-              onCallAction={() => callPhone(prospect.telefono)}
-              onEmailAction={(id) => {
+              onCallAction={() => {
+                // Acción de llamada
+                console.log('Iniciar llamada para', prospect.nombre_negocio);
+              }}
+              onEmailAction={() => {
                 // Aquí puedes navegar a la sección de envío de emails o abrir un modal
-                console.log('Email action para', id);
+                console.log('Email action para', prospect.nombre_negocio);
               }}
             />
           )}

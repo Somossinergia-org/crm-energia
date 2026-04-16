@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../services/api';
+import api from '../services/api';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { HiOutlineTrendingUp, HiOutlineMail, HiOutlineUsers, HiOutlineLightBulb } from 'react-icons/hi';
 
@@ -233,7 +233,7 @@ export default function SalesAnalyticsDashboard() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, cantidad }) => `${name}: ${cantidad}`}
+                    label={(entry: any) => `${entry.name}: ${entry.cantidad}`}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="cantidad"

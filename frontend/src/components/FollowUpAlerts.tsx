@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../services/api';
+import api from '../services/api';
 import { HiOutlineExclamation, HiOutlinePhone, HiOutlineMail, HiOutlineLocationMarker, HiOutlineChat, HiOutlineRefresh } from 'react-icons/hi';
 
 interface FollowUpAlert {
@@ -60,7 +60,7 @@ export default function FollowUpAlerts() {
   });
 
   // Obtener estadísticas de follow-up
-  const { data: statsData, isLoading: statsLoading } = useQuery({
+  const { data: statsData } = useQuery({
     queryKey: ['followup-stats'],
     queryFn: async () => {
       const response = await api.get('/sales/followup/stats');

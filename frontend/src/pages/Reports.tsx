@@ -1,9 +1,7 @@
-import { useAuthStore } from '../stores/authStore';
 import SalesAnalyticsDashboard from '../components/SalesAnalyticsDashboard';
-import { HiOutlineTrendingUp, HiOutlineDocumentText } from 'react-icons/hi';
+import { HiOutlineTrendingUp } from 'react-icons/hi';
 
 export default function Reports() {
-  const user = useAuthStore((s) => s.user);
 
   return (
     <div className="space-y-6">
