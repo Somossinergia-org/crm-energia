@@ -11,6 +11,7 @@ import ProspectModal from '../components/prospects/ProspectModal';
 import ProspectServiciosPanel from '../components/prospects/ProspectServiciosPanel';
 import DocumentsPanel from '../components/prospects/DocumentsPanel';
 import ProspectAIPanel from '../components/ProspectAIPanel';
+import SalesAgentPanel from '../components/SalesAgentPanel';
 import ConversacionTab from '../components/prospects/ConversacionTab';
 import BillUploader, { type ParsedBillData } from '../components/BillUploader';
 import { toast } from 'react-toastify';
@@ -54,7 +55,7 @@ export default function ProspectDetail() {
   const user = useAuthStore((s) => s.user);
   const [showQuickLog, setShowQuickLog] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<'historial' | 'conversacion' | 'ia'>('historial');
+  const [activeTab, setActiveTab] = useState<'historial' | 'conversacion' | 'ia' | 'ventas'>('historial');
   const [showBillUploader, setShowBillUploader] = useState(false);
 
   const { data: prospectData, isLoading } = useQuery({
@@ -640,6 +641,16 @@ export default function ProspectDetail() {
             >
               ✨ Asistente IA
             </button>
+            <button
+              onClick={() => setActiveTab('ventas')}
+              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                activeTab === 'ventas'
+                  ? 'border-green-500 text-green-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              💼 Agente de Ventas
+            </button>
           </div>
 
           {/* Tab content */}
@@ -671,6 +682,19 @@ export default function ProspectDetail() {
             <ProspectAIPanel
               prospectId={prospect.id}
               prospectNombre={prospect.nombre_negocio}
+            />
+          )}
+
+          {activeTab === 'ventas' && (
+            <SalesAgentPanel
+              prospectId={prospect.id}
+              prospectName={prospect.nombre_negocio}
+              temperatura={prospect.temperatura}
+              onCallAction={() => callPhone(prospect.telefono)}
+              onEmailAction={(id) => {
+                // Aquí puedes navegar a la sección de envío de emails o abrir un modal
+                console.log('Email action para', id);
+              }}
             />
           )}
         </div>
