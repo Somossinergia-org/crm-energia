@@ -19,3 +19,4 @@ coverage/
 *.swo
 
 .vercel
+.claude/

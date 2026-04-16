@@ -5,5 +5,8 @@
   "private": true,
   "scripts": {
     "build": "cd frontend && npm install --legacy-peer-deps && npm run build"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
