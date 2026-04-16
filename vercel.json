@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm run build",
+  "buildCommand": "npm ci --legacy-peer-deps && cd backend && npm ci --legacy-peer-deps && npm run build && cd ../frontend && npm ci --legacy-peer-deps && npm run build",
   "framework": "vite",
   "outputDirectory": "frontend/dist",
   "env": {
