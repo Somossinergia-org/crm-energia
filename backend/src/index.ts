@@ -106,9 +106,12 @@ async function start() {
   });
 }
 
-start().catch((err) => {
-  logger.error('Error al iniciar:', err);
-  process.exit(1);
-});
+// Only start server if not on Vercel (Vercel handles the server)
+if (!process.env.VERCEL) {
+  start().catch((err) => {
+    logger.error('Error al iniciar:', err);
+    process.exit(1);
+  });
+}
 
 export default app;
