@@ -1,5 +1,5 @@
-// Import the compiled backend Express app
-const app = require('../backend/dist/index').default;
+// Import the compiled backend Express app (bundled during build)
+const app = require('./backend/dist/index').default;
 
 // Export as Vercel serverless function
 module.exports = (req, res) => {
