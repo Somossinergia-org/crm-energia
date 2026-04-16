@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticateToken } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
 import {
   getPitch,
   handleProspectObjection,
@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 // Proteger todas las rutas con autenticación
-router.use(authenticateToken);
+router.use(authenticate);
 
 // ── Endpoints de ventas ────────────────────────────────────────────────────────
 
