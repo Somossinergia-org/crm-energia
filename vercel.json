@@ -1,5 +1,9 @@
 {
-  "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm run build",
-  "outputDirectory": "frontend/dist",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/ && exit 0 || exit 1"
+  "projects": {
+    "frontend": {
+      "name": "crm-energia",
+      "buildCommand": "npm install --legacy-peer-deps && npm run build",
+      "outputDirectory": "dist"
+    }
+  }
 }
