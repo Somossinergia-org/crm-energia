@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Import Express app from backend
-import app from '../backend/src/index';
+// Import Express app from compiled backend
+import app from '../backend/dist/index';
 
 // Export as Vercel serverless function
 export default (req: VercelRequest, res: VercelResponse) => {
@@ -20,6 +20,6 @@ export default (req: VercelRequest, res: VercelResponse) => {
     return;
   }
 
-  // Pass to Express app - Vercel will handle the rest
-  return app(req, res);
+  // Pass request/response to Express app handler
+  app(req as any, res as any);
 };
