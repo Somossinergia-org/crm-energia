@@ -15,6 +15,9 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
+# Remove dev dependencies to reduce image size
+RUN npm prune --omit=dev
+
 # Production stage
 FROM node:20-alpine
 
@@ -23,11 +26,9 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --legacy-peer-deps --omit=dev
-
-# Copy compiled code from builder
+# Copy compiled code and optimized node_modules from builder
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
 
 # Set environment variables for Cloud Run
 ENV NODE_ENV=production
