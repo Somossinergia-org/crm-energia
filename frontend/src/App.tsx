@@ -9,7 +9,7 @@ import Servicios from './pages/Servicios';
 import Agenda from './pages/Agenda';
 import Calculadora from './pages/Calculadora';
 import EmailPage from './pages/Email';
-import Reportes from './pages/Reportes';
+import Reports from './pages/Reports';
 import Configuracion from './pages/Configuracion';
 import Inbox from './pages/Inbox';
 import Layout from './pages/Layout';
@@ -53,7 +53,7 @@ export default function App() {
         <Route path="inbox" element={<Inbox />} />
         <Route path="emails" element={<EmailPage />} />
         <Route path="calculadora" element={<Calculadora />} />
-        <Route path="reportes" element={<Reportes />} />
+        <Route path="reportes" element={<Reports />} />
         <Route path="configuracion" element={<Configuracion />} />
         <Route path="agente" element={<AgentPage />} />
       </Route>

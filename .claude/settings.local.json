@@ -68,7 +68,15 @@
       "Bash(curl -s http://localhost:51823/api/analytics/kpis -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRjZDgwOTkyLWFmMmMtNGZjZS04MGZlLTM2ZGNiMTBlYjM2YyIsImVtYWlsIjoiYWRtaW5Ac2luZXJnaWEuZXMiLCJyb2xlIjoiYWRtaW4iLCJub21icmUiOiJDYXJsb3MiLCJpYXQiOjE3NzYyOTUzMTIsImV4cCI6MTc3NjI5NjIxMn0.sPt5MfcWt0j5YdiHLvRxsQ2pKMCsdHT6ycs81u5myr8')",
       "Bash(curl -s http://localhost:51823/api/analytics/radar -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRjZDgwOTkyLWFmMmMtNGZjZS04MGZlLTM2ZGNiMTBlYjM2YyIsImVtYWlsIjoiYWRtaW5Ac2luZXJnaWEuZXMiLCJyb2xlIjoiYWRtaW4iLCJub21icmUiOiJDYXJsb3MiLCJpYXQiOjE3NzYyOTUzMTIsImV4cCI6MTc3NjI5NjIxMn0.sPt5MfcWt0j5YdiHLvRxsQ2pKMCsdHT6ycs81u5myr8')",
       "Bash(curl -s http://localhost:51823/api/analytics/prediccion -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRjZDgwOTkyLWFmMmMtNGZjZS04MGZlLTM2ZGNiMTBlYjM2YyIsImVtYWlsIjoiYWRtaW5Ac2luZXJnaWEuZXMiLCJyb2xlIjoiYWRtaW4iLCJub21icmUiOiJDYXJsb3MiLCJpYXQiOjE3NzYyOTUzMTIsImV4cCI6MTc3NjI5NjIxMn0.sPt5MfcWt0j5YdiHLvRxsQ2pKMCsdHT6ycs81u5myr8')",
-      "Bash(curl -s http://localhost:51823/api/analytics/prediccion-cierres -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRjZDgwOTkyLWFmMmMtNGZjZS04MGZlLTM2ZGNiMTBlYjM2YyIsImVtYWlsIjoiYWRtaW5Ac2luZXJnaWEuZXMiLCJyb2xlIjoiYWRtaW4iLCJub21icmUiOiJDYXJsb3MiLCJpYXQiOjE3NzYyOTUzMTIsImV4cCI6MTc3NjI5NjIxMn0.sPt5MfcWt0j5YdiHLvRxsQ2pKMCsdHT6ycs81u5myr8')"
+      "Bash(curl -s http://localhost:51823/api/analytics/prediccion-cierres -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRjZDgwOTkyLWFmMmMtNGZjZS04MGZlLTM2ZGNiMTBlYjM2YyIsImVtYWlsIjoiYWRtaW5Ac2luZXJnaWEuZXMiLCJyb2xlIjoiYWRtaW4iLCJub21icmUiOiJDYXJsb3MiLCJpYXQiOjE3NzYyOTUzMTIsImV4cCI6MTc3NjI5NjIxMn0.sPt5MfcWt0j5YdiHLvRxsQ2pKMCsdHT6ycs81u5myr8')",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer",
+      "mcp__Claude_in_Chrome__read_page",
+      "mcp__Claude_in_Chrome__read_console_messages",
+      "mcp__Claude_in_Chrome__read_network_requests",
+      "mcp__Claude_in_Chrome__tabs_close_mcp",
+      "Bash(docker-compose exec:*)"
     ]
   }
 }
