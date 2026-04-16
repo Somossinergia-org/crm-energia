@@ -76,7 +76,8 @@
       "mcp__Claude_in_Chrome__read_console_messages",
       "mcp__Claude_in_Chrome__read_network_requests",
       "mcp__Claude_in_Chrome__tabs_close_mcp",
-      "Bash(docker-compose exec:*)"
+      "Bash(docker-compose exec:*)",
+      "Bash(vercel --version)"
     ]
   }
 }
