@@ -6,7 +6,7 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "startCommand": "cd backend && npm start",
+    "startCommand": "bash start.sh",
     "restartPolicyMaxRetries": 3,
     "restartPolicyWindowMs": 60000
   }
