@@ -90,20 +90,35 @@ async function waitForDB(maxRetries = 10, delayMs = 3000): Promise<boolean> {
 }
 
 async function start() {
-  // Conectar a PostgreSQL con reintentos
-  const dbOk = await waitForDB();
-  if (!dbOk) {
-    logger.error('No se pudo conectar a PostgreSQL tras 10 intentos. Comprueba que Docker Desktop esta corriendo.');
-    process.exit(1);
-  }
-
-  await connectRedis();
-
-  app.listen(env.PORT, () => {
+  // Iniciar servidor inmediatamente (no bloqueante)
+  const server = app.listen(env.PORT, () => {
     logger.info(`Servidor CRM Energia corriendo en puerto ${env.PORT}`);
     logger.info(`Entorno: ${env.NODE_ENV}`);
     logger.info(`Frontend: ${env.FRONTEND_URL}`);
   });
+
+  // Conectar a dependencias en background (sin bloquear)
+  (async () => {
+    try {
+      const dbOk = await waitForDB();
+      if (dbOk) {
+        logger.info('✅ PostgreSQL conectado');
+      } else {
+        logger.warn('⚠️  PostgreSQL no disponible - API operará en modo limitado');
+      }
+    } catch (err) {
+      logger.warn('⚠️  Error conectando a PostgreSQL:', err);
+    }
+
+    try {
+      await connectRedis();
+      logger.info('✅ Redis conectado');
+    } catch (err) {
+      logger.warn('⚠️  Redis no disponible:', err);
+    }
+  })();
+
+  return server;
 }
 
 // Only start server if not on Vercel (Vercel handles the server)
