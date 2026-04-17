@@ -1,8 +1,8 @@
 # Registro de Riesgos - CRM Energía
 
-**Versión:** 1.0  
-**Última Actualización:** Abril 2026  
-**Estado:** Activo - Seguimiento Continuo  
+**Versión:** 1.0
+**Última Actualización:** Abril 2026
+**Estado:** Activo - Seguimiento Continuo
 
 ---
 
@@ -28,8 +28,8 @@
 4. Implementar en staging primero
 5. Desplegar a producción con rollback plan
 
-**Propietario:** Dev Lead  
-**Fecha Objetivo:** Semana 1 de implementación  
+**Propietario:** Dev Lead
+**Fecha Objetivo:** Semana 1 de implementación
 **Métricas:** npm audit = 0 vulnerabilidades críticas
 
 ---
@@ -56,8 +56,8 @@
 4. Auditar TODOS los endpoints y reproteger
 5. Tests de negación por rol
 
-**Propietario:** Security Lead  
-**Fecha Objetivo:** Semana 2-3 de implementación  
+**Propietario:** Security Lead
+**Fecha Objetivo:** Semana 2-3 de implementación
 **Métricas:** 100% de endpoints protegiéndose vía middleware centralizado
 
 ---
@@ -82,8 +82,8 @@
 3. Crear endpoints de debugging solo en staging
 4. Auditoría de qué se exponía en debug
 
-**Propietario:** Dev Lead  
-**Fecha Objetivo:** Semana 1  
+**Propietario:** Dev Lead
+**Fecha Objetivo:** Semana 1
 **Métricas:** Ningún debug endpoint accesible en producción
 
 ---
@@ -111,8 +111,8 @@
 4. Admin: 10 intentos / minuto por usuario
 5. Global: 100 req/min por IP
 
-**Propietario:** Backend Lead  
-**Fecha Objetivo:** Semana 1  
+**Propietario:** Backend Lead
+**Fecha Objetivo:** Semana 1
 **Métricas:** Todos los endpoints sensibles con rate limiting < 5 req/min
 
 ---
@@ -138,8 +138,8 @@
 4. Backup codes para recovery
 5. Auditoría de acceso MFA-bypass
 
-**Propietario:** Security Lead  
-**Fecha Objetivo:** Semana 3  
+**Propietario:** Security Lead
+**Fecha Objetivo:** Semana 3
 **Métricas:** 100% de SUPER_ADMIN con MFA activa
 
 ---
@@ -170,8 +170,8 @@
 3. Immutable trail (no puede deletarse)
 4. Expiración según compliance (2-7 años)
 
-**Propietario:** Security Lead  
-**Fecha Objetivo:** Semana 4  
+**Propietario:** Security Lead
+**Fecha Objetivo:** Semana 4
 **Métricas:** 100% de accesos sensibles auditados
 
 ---
@@ -192,8 +192,8 @@
 4. Regenerar .env.example sin valores
 5. Crear .gitignore con `*.env` 6. CI/CD pre-commit hooks para detectar secrets
 
-**Propietario:** DevOps Lead  
-**Fecha Objetivo:** Antes de cualquier deploy  
+**Propietario:** DevOps Lead
+**Fecha Objetivo:** Antes de cualquier deploy
 **Métricas:** 0 secretos en repositorio
 
 ---
@@ -221,8 +221,8 @@
 4. Validar `user.tenantId === resource.tenantId` en TODOS los endpoints
 5. Crear índices (tenant_id, user_id, etc.)
 
-**Propietario:** Database Lead  
-**Fecha Objetivo:** Semana 2  
+**Propietario:** Database Lead
+**Fecha Objetivo:** Semana 2
 **Métricas:** Todos los endpoints validando tenant_id
 
 ---
@@ -248,8 +248,8 @@
 3. State machine para transiciones
 4. Sanitización de output antes de enviar al cliente
 
-**Propietario:** Backend Lead  
-**Fecha Objetivo:** Semana 2-3  
+**Propietario:** Backend Lead
+**Fecha Objetivo:** Semana 2-3
 **Métricas:** 100% de inputs validados en backend
 
 ---
@@ -275,8 +275,8 @@
    - Break-glass usage
 3. Mínima cobertura: 70% en auth/security
 
-**Propietario:** QA Lead  
-**Fecha Objetivo:** Semana 4-5  
+**Propietario:** QA Lead
+**Fecha Objetivo:** Semana 4-5
 **Métricas:** 70% cobertura en security layer
 
 ---
@@ -375,9 +375,9 @@
 
 ## 8. Revisión de Riesgos
 
-**Cadencia:** Semanal durante implementación, mensual después  
-**Dueño:** Security Lead + Product Manager  
-**Escalación:** Si un risk blocker no se cierra en su sprint, escalar a CTO  
+**Cadencia:** Semanal durante implementación, mensual después
+**Dueño:** Security Lead + Product Manager
+**Escalación:** Si un risk blocker no se cierra en su sprint, escalar a CTO
 
 ---
 

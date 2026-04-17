@@ -1,8 +1,8 @@
 # Matriz de Permisos - CRM Energía
 
-**Versión:** 1.0  
-**Última Actualización:** Abril 2026  
-**Modelo:** RBAC (Role-Based Access Control) + Tenant-Scoped  
+**Versión:** 1.0
+**Última Actualización:** Abril 2026
+**Modelo:** RBAC (Role-Based Access Control) + Tenant-Scoped
 
 ---
 
@@ -58,7 +58,7 @@
 | `pipeline.delete` | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `pipeline.export` | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
-*_VENTAS solo puede actualizar prospects asignados a ellos_  
+*_VENTAS solo puede actualizar prospects asignados a ellos_
 ⚠️ _Solo lectura de datos relevantes a su función_
 
 ### 2.4 Warehouse y Logística

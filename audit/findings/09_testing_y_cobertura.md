@@ -227,13 +227,13 @@ describe('ProtectedRoute', () => {
   it('redirects to login when not authenticated', () => {
     // Mock useAuthStore
     const mockStore = { isAuthenticated: false, user: null };
-    
+
     const { container } = render(
       <ProtectedRoute>
         <div>Protected Content</div>
       </ProtectedRoute>
     );
-    
+
     expect(window.location.pathname).toBe('/login');
   });
 });

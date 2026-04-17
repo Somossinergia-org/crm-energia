@@ -1,9 +1,9 @@
 # Plan de Arquitectura - Remediación Segura
 ## CRM Energía - Rediseño de Permisos y Cierre de Vulnerabilidades
 
-**Fecha:** Abril 2026  
-**Versión:** 1.0  
-**Estado:** En Planificación  
+**Fecha:** Abril 2026
+**Versión:** 1.0
+**Estado:** En Planificación
 
 ---
 
@@ -170,7 +170,7 @@ interface BreakGlassOverride {
 ## 3. Hallazgos de Seguridad Crítica
 
 ### 3.1 Vulnerabilidades de Dependencias
-**20 total:** 13 high + 4 moderate en frontend  
+**20 total:** 13 high + 4 moderate en frontend
 
 **Acción:** Actualizar inmediatamente, evaluar compatibilidad
 

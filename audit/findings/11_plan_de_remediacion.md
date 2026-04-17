@@ -2,16 +2,16 @@
 
 ## Resumen Ejecutivo
 
-**Duración Total Estimada:** 4-6 semanas  
-**Esfuerzo Total:** 40-60 horas de desarrollo  
-**Prioridad:** Alta - Remediación crítica antes de producción  
+**Duración Total Estimada:** 4-6 semanas
+**Esfuerzo Total:** 40-60 horas de desarrollo
+**Prioridad:** Alta - Remediación crítica antes de producción
 
 ## Fases de Remediación
 
 ### 🔥 Fase 1: Seguridad Crítica (Semana 1)
-**Duración:** 5 días  
-**Esfuerzo:** 15-20 horas  
-**Objetivo:** Eliminar riesgos de seguridad críticos  
+**Duración:** 5 días
+**Esfuerzo:** 15-20 horas
+**Objetivo:** Eliminar riesgos de seguridad críticos
 
 #### Tareas:
 1. **Actualizar dependencias vulnerables** (AUDIT-DEPS-001)
@@ -37,9 +37,9 @@
 ---
 
 ### 🧪 Fase 2: Testing Foundation (Semana 2)
-**Duración:** 5 días  
-**Esfuerzo:** 20-25 horas  
-**Objetivo:** Establecer base de testing  
+**Duración:** 5 días
+**Esfuerzo:** 20-25 horas
+**Objetivo:** Establecer base de testing
 
 #### Tareas:
 1. **Configurar framework de testing** (AUDIT-TEST-001)
@@ -72,9 +72,9 @@
 ---
 
 ### 🗄️ Fase 3: Optimización de Datos (Semana 3)
-**Duración:** 3 días  
-**Esfuerzo:** 8-12 horas  
-**Objetivo:** Mejorar performance de base de datos  
+**Duración:** 3 días
+**Esfuerzo:** 8-12 horas
+**Objetivo:** Mejorar performance de base de datos
 
 #### Tareas:
 1. **Añadir índices críticos** (AUDIT-DATA-001)
@@ -101,9 +101,9 @@
 ---
 
 ### 📊 Fase 4: Observabilidad (Semana 4)
-**Duración:** 4 días  
-**Esfuerzo:** 12-15 horas  
-**Objetivo:** Añadir métricas y monitoring  
+**Duración:** 4 días
+**Esfuerzo:** 12-15 horas
+**Objetivo:** Añadir métricas y monitoring
 
 #### Tareas:
 1. **Implementar métricas** (AUDIT-PERF-001)
@@ -131,9 +131,9 @@
 ---
 
 ### 🎨 Fase 5: Mejoras Frontend (Semana 5-6)
-**Duración:** 5 días  
-**Esfuerzo:** 15-20 horas  
-**Objetivo:** Optimizar UX y performance  
+**Duración:** 5 días
+**Esfuerzo:** 15-20 horas
+**Objetivo:** Optimizar UX y performance
 
 #### Tareas:
 1. **Auditoría de accesibilidad** (AUDIT-FE-002)
