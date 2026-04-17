@@ -19,7 +19,7 @@ const envSchema = z.object({
   DB_PORT: z.coerce.number().default(5432),
   DB_NAME: z.string().default('crm_energia'),
   DB_USER: z.string().default('crm_user'),
-  DB_PASSWORD: z.string().default('crm_password_segura_2024'),
+  DB_PASSWORD: z.string().min(1, 'DB_PASSWORD is required — set it in your .env file'),
 
   // JWT
   JWT_SECRET: z.string().min(10),
@@ -28,7 +28,7 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().default(process.env.JWT_REFRESH_EXPIRE || '7d'),
 
   // Cifrado
-  ENCRYPTION_KEY: z.string().min(16).default('dev-encryption-key-32-chars-ok!'),
+  ENCRYPTION_KEY: z.string().min(16, 'ENCRYPTION_KEY must be at least 16 chars — set it in your .env file'),
 
   // IA
   GEMINI_API_KEY: z.string().optional().default(''),
