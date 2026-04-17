@@ -49,6 +49,8 @@ export interface AuthorizationResult {
   requiresReauth: boolean;
   requiresReason: boolean;
   requiresConfirmation: boolean;
+  isBreakGlass?: boolean; // Si se usó break-glass
+  breakGlassReason?: string; // Motivo del break-glass
 }
 
 /**
