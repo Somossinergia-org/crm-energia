@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import { env } from './config/env';
-import { testConnection } from './config/database';
+import { pool, testConnection } from './config/database';
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
 import { generalLimiter } from './middleware/rateLimiter';
@@ -31,7 +31,8 @@ import salesRoutes from './routes/sales.routes';
 import path from 'path';
 
 const app = express();
-app.set('trust proxy', true);
+// Trust first proxy hop (Vercel/Cloud Run/nginx) — avoids rate-limit bypass
+app.set('trust proxy', 1);
 
 // ── Middleware global ──
 app.use(helmet());
@@ -74,9 +75,36 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/sales', salesRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
-// Health check
+// Health check (basic - always returns ok if the process is up)
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Detailed health check (includes DB connectivity and uptime)
+app.get('/api/health/detailed', async (_req, res) => {
+  const checks: Record<string, { status: string; latency?: number; error?: string }> = {};
+
+  // Check database
+  const dbStart = Date.now();
+  try {
+    await pool.query('SELECT 1');
+    checks.database = { status: 'ok', latency: Date.now() - dbStart };
+  } catch (err: any) {
+    checks.database = { status: 'error', latency: Date.now() - dbStart, error: err.message };
+  }
+
+  const allOk = Object.values(checks).every(c => c.status === 'ok');
+
+  res.status(allOk ? 200 : 503).json({
+    status: allOk ? 'healthy' : 'degraded',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: {
+      rss: Math.round(process.memoryUsage().rss / 1024 / 1024),
+      heapUsed: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+    },
+    checks,
+  });
 });
 
 // ── Manejo de errores ──

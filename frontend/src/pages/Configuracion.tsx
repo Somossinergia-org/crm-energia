@@ -535,7 +535,7 @@ function TabEmpresa({ showToast }: { showToast: (msg: string, type?: 'success' |
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) return JSON.parse(stored) as EmpresaForm;
-    } catch {}
+    } catch { /* ignored */ }
     return {
       nombre: '',
       cif: '',
@@ -938,7 +938,7 @@ function TabAplicacion({ showToast }: { showToast: (msg: string, type?: 'success
     try {
       const stored = localStorage.getItem(PREFS_KEY);
       if (stored) return JSON.parse(stored) as AppPrefs;
-    } catch {}
+    } catch { /* ignored */ }
     return {
       notificaciones: false,
       modoOscuro: false,
@@ -951,7 +951,7 @@ function TabAplicacion({ showToast }: { showToast: (msg: string, type?: 'success
     setPrefs(updated);
     try {
       localStorage.setItem(PREFS_KEY, JSON.stringify(updated));
-    } catch {}
+    } catch { /* ignored */ }
   };
 
   const handleClearCache = () => {

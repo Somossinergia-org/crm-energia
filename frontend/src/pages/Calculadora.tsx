@@ -460,7 +460,7 @@ function calcAlarmas(d: FormDataAlarmas): ServiceResult {
   const totalActual = d.gastoMensualCRA || 0;
 
   // Propuesta
-  let cuotaPropuesta = d.tieneVideovigilancia
+  const cuotaPropuesta = d.tieneVideovigilancia
     ? PRECIOS_ALARMAS.craConVideo
     : PRECIOS_ALARMAS.craCompetitiva;
 
