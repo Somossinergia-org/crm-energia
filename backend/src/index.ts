@@ -12,7 +12,6 @@ import { generalLimiter } from './middleware/rateLimiter';
 // Rutas
 import adminRoutes from './routes/admin.routes';
 import authRoutes from './routes/auth.routes';
-import debugRoutes from './routes/debug.routes';
 import usersRoutes from './routes/users.routes';
 import prospectsRoutes from './routes/prospects.routes';
 import zonesRoutes from './routes/zones.routes';
@@ -55,9 +54,6 @@ app.use(morgan('short', {
 // ── Rutas API ──
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
-if (env.NODE_ENV !== 'production') {
-  app.use('/api/debug', debugRoutes);
-}
 app.use('/api/users', usersRoutes);
 app.use('/api/prospects', prospectsRoutes);
 app.use('/api/zones', zonesRoutes);

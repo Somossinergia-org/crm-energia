@@ -1,18 +1,12 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { query } from '../config/database';
 import bcrypt from 'bcryptjs';
+import { authenticate, authorize, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
-// Endpoint para inicializar la base de datos (solo con token secreto)
-router.post('/init', async (req: Request, res: Response) => {
-  const token = req.headers['x-init-token'];
-  const expectedToken = process.env.INIT_TOKEN || 'dev-token-12345';
-
-  if (token !== expectedToken) {
-    return res.status(401).json({ success: false, message: 'Token inválido' });
-  }
-
+// Endpoint para inicializar la base de datos: requiere admin autenticado
+router.post('/init', authenticate, authorize('admin'), async (_req: AuthRequest, res: Response) => {
   try {
     console.log('🔄 Iniciando creación de tablas...');
 
