@@ -1,25 +1,11 @@
 {
   "version": 2,
   "buildCommand": "bash build.sh",
+  "installCommand": "echo 'Skipping root install - build.sh runs npm ci in backend/ and frontend/'",
   "framework": "vite",
   "outputDirectory": "frontend/dist",
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "DB_HOST": "@db_host",
-    "DB_PORT": "@db_port",
-    "DB_USER": "@db_user",
-    "DB_PASSWORD": "@db_password",
-    "DB_NAME": "@db_name",
-    "NODE_ENV": "production",
-    "JWT_SECRET": "@jwt_secret",
-    "JWT_REFRESH_SECRET": "@jwt_refresh_secret",
-    "GEMINI_API_KEY": "@gemini_api_key",
-    "CORS_ORIGIN": "@cors_origin",
-    "LOG_LEVEL": "info"
-  },
   "functions": {
     "api/index.js": {
-      "runtime": "nodejs20.x",
       "memory": 1024,
       "maxDuration": 30
     }

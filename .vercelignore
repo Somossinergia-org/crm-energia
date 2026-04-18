@@ -1,6 +1,5 @@
 node_modules
 .git
-backend
 .env
 .env.local
 .env.supabase
@@ -10,3 +9,8 @@ coverage
 .vscode
 .idea
 .claude
+audit
+backend/node_modules
+backend/dist
+frontend/node_modules
+frontend/dist
