@@ -13,6 +13,12 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    env:
+      NODE_ENV: test
+      DB_PASSWORD: ci_test_password
+      JWT_SECRET: ci_test_jwt_secret_not_for_production
+      JWT_REFRESH_SECRET: ci_test_jwt_refresh_secret_not_for_production
+      ENCRYPTION_KEY: ci_test_encryption_key_32chars_xx
     steps:
       - uses: actions/checkout@v4
 
