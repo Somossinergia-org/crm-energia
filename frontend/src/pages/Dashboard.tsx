@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import BriefingWidget from '../components/BriefingWidget';
 import RadarOportunidades from '../components/RadarOportunidades';
 import PrediccionCierres from '../components/PrediccionCierres';
+import FollowUpAlerts from '../components/FollowUpAlerts';
 import {
   HiOutlineUsers,
   HiOutlinePhone,
@@ -518,6 +519,15 @@ export default function Dashboard() {
             <p className="text-sm text-gray-400 py-4 text-center">No hay visitas programadas para hoy</p>
           )}
         </div>
+      </div>
+
+      {/* Follow-up Alerts */}
+      <div className="card">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <HiOutlineChat className="w-5 h-5 text-primary-600" />
+          Alertas de Follow-up
+        </h2>
+        <FollowUpAlerts />
       </div>
     </div>
   );

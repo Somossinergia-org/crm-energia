@@ -2,37 +2,33 @@ import { z } from 'zod';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Buscar .env en la raíz del proyecto (un nivel arriba de backend/)
+// Load local backend env first, then repo root env, then system env variables.
+// This allows local development with backend/.env and keeps compatibility with older .env files.
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
-// Fallback: buscar en el directorio actual
 dotenv.config();
 
 // Esquema de validación para variables de entorno
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(3000),
-  FRONTEND_URL: z.string().default('http://localhost:5173'),
+  FRONTEND_URL: z.string().default(process.env.CORS_ORIGIN || 'http://localhost:5173'),
 
   // PostgreSQL
   DB_HOST: z.string().default('localhost'),
   DB_PORT: z.coerce.number().default(5432),
   DB_NAME: z.string().default('crm_energia'),
   DB_USER: z.string().default('crm_user'),
-  DB_PASSWORD: z.string().default('crm_password_segura_2024'),
-
-  // Redis
-  REDIS_HOST: z.string().default('localhost'),
-  REDIS_PORT: z.coerce.number().default(6379),
-  REDIS_PASSWORD: z.string().optional().default(''),
+  DB_PASSWORD: z.string().min(1, 'DB_PASSWORD is required — set it in your .env file'),
 
   // JWT
   JWT_SECRET: z.string().min(10),
   JWT_REFRESH_SECRET: z.string().min(10),
-  JWT_EXPIRES_IN: z.string().default('15m'),
-  JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
+  JWT_EXPIRES_IN: z.string().default(process.env.JWT_EXPIRE || '15m'),
+  JWT_REFRESH_EXPIRES_IN: z.string().default(process.env.JWT_REFRESH_EXPIRE || '7d'),
 
   // Cifrado
-  ENCRYPTION_KEY: z.string().min(16).default('dev-encryption-key-32-chars-ok!'),
+  ENCRYPTION_KEY: z.string().min(16, 'ENCRYPTION_KEY must be at least 16 chars — set it in your .env file'),
 
   // IA
   GEMINI_API_KEY: z.string().optional().default(''),
@@ -52,11 +48,11 @@ const envSchema = z.object({
 
   // Logs
   LOG_LEVEL: z.string().default('debug'),
-  LOG_DIR: z.string().default('./logs'),
+  LOG_DIR: z.string().default(process.env.LOG_FILE ? path.dirname(process.env.LOG_FILE) : './logs'),
 
   // Rate Limiting
   RATE_LIMIT_WINDOW_MS: z.coerce.number().default(900000),
-  RATE_LIMIT_MAX: z.coerce.number().default(100),
+  RATE_LIMIT_MAX: z.coerce.number().default(Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 100),
 
   // Uploads
   UPLOAD_DIR: z.string().default('./uploads'),

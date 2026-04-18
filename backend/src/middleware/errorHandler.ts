@@ -44,6 +44,17 @@ export function errorHandler(
     return;
   }
 
+  // Errores de middleware como body-parser que traen status/statusCode
+  const anyErr = err as any;
+  const statusCode = anyErr.statusCode || anyErr.status;
+  if (typeof statusCode === 'number' && statusCode >= 400 && statusCode < 500) {
+    res.status(statusCode).json({
+      success: false,
+      message: anyErr.message || 'Error en la solicitud',
+    });
+    return;
+  }
+
   // Error inesperado
   logger.error('Error no manejado:', err);
   res.status(500).json({

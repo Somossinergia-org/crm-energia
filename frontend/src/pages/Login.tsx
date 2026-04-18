@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { Navigate } from 'react-router-dom';
 import { useLogin } from '../hooks/useAuth';
 import { useAuthStore } from '../stores/authStore';
-import { HiOutlineLightningBolt } from 'react-icons/hi';
+import { HiOutlineLightningBolt, HiOutlineUserCircle, HiOutlineBriefcase } from 'react-icons/hi';
 
 const loginSchema = z.object({
   email: z.string().email('Email invalido'),
@@ -24,6 +24,10 @@ export default function Login() {
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   });
+
+  const quickLogin = (email: string, password: string) => {
+    loginMutation.mutate({ email, password });
+  };
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -95,12 +99,39 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Credenciales de prueba */}
-          <div className="mt-6 p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 font-medium mb-2">Credenciales de prueba:</p>
-            <div className="space-y-1 text-xs text-gray-600">
-              <p><strong>Admin:</strong> admin@sinergia.es / admin123</p>
-              <p><strong>Comercial:</strong> juan@sinergia.es / comercial123</p>
+          {/* Acceso rapido */}
+          <div className="mt-6">
+            <p className="text-xs text-gray-400 text-center mb-3">— Acceso rapido —</p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => quickLogin('admin@sinergia.es', 'admin123')}
+                disabled={loginMutation.isPending}
+                className="flex items-center gap-2 p-3 rounded-xl border-2 border-primary-100 bg-primary-50 hover:bg-primary-100 hover:border-primary-300 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center flex-shrink-0">
+                  <HiOutlineUserCircle className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-semibold text-primary-700">Admin</p>
+                  <p className="text-xs text-gray-500">admin@sinergia.es</p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => quickLogin('juan@sinergia.es', 'comercial123')}
+                disabled={loginMutation.isPending}
+                className="flex items-center gap-2 p-3 rounded-xl border-2 border-emerald-100 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-300 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
+                  <HiOutlineBriefcase className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-semibold text-emerald-700">Comercial</p>
+                  <p className="text-xs text-gray-500">juan@sinergia.es</p>
+                </div>
+              </button>
             </div>
           </div>
         </div>

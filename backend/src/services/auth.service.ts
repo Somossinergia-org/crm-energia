@@ -148,8 +148,7 @@ export async function changePassword(
   currentPassword: string,
   newPassword: string
 ): Promise<void> {
-  const user = await UserModel.findByEmail(userId); // Esto necesita ajuste
-  // Buscar por ID directamente con password
+  // Obtener usuario con su contraseña actual
   const result = await import('../config/database').then(db =>
     db.query('SELECT password FROM users WHERE id = $1', [userId])
   );

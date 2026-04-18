@@ -149,7 +149,7 @@ export default function InformeWidget() {
           </div>
         ) : !informe?.informe ? (
           <div className="py-8 text-center">
-            <p className="text-sm text-gray-500">No hay informe disponible. Pulsa "Regenerar".</p>
+            <p className="text-sm text-gray-500">No hay informe disponible. Pulsa &quot;Regenerar&quot;.</p>
           </div>
         ) : (
           <div className="prose-sm max-w-none">

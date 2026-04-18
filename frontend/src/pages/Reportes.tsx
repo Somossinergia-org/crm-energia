@@ -270,7 +270,7 @@ export default function Reportes() {
 
     const ahorroTotal = prospects
       .filter(p => CLOSED_WIN.includes(p.estado) && p.ahorro_estimado_eur)
-      .reduce((s, p) => s + (p.ahorro_estimado_eur ?? 0), 0);
+      .reduce((s, p) => s + Number(p.ahorro_estimado_eur ?? 0), 0);
 
     return { activePipeline, ganados, tasa, ahorroTotal, total, won };
   }, [prospects]);
