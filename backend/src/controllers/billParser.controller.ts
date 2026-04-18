@@ -7,7 +7,7 @@ import { extractEnergyBillFromText, extractEnergyBillFromImage } from '../servic
 import { env } from '../config/env';
 import { logger } from '../utils/logger';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const pdfParse = require('pdf-parse');
 
 // Multer config for temporary PDF upload
