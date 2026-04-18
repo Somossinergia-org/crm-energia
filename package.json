@@ -4,7 +4,17 @@
   "description": "CRM para comerciales de energía",
   "private": true,
   "scripts": {
-    "build": "cd frontend && npm install --legacy-peer-deps && npm run build"
+    "build": "cd frontend && npm install --legacy-peer-deps && npm run build",
+    "typecheck": "npm run typecheck:backend && npm run typecheck:frontend",
+    "typecheck:backend": "cd backend && npx tsc --noEmit",
+    "typecheck:frontend": "cd frontend && npx tsc --noEmit",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test -- --run",
+    "test:frontend": "cd frontend && npm test -- --run",
+    "check": "npm run typecheck && npm run lint && npm run test"
   },
   "engines": {
     "node": "20.x"
