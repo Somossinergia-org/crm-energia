@@ -6,7 +6,8 @@ echo "🔨 Building CRM Energía (Backend + Frontend)..."
 # Build backend TypeScript
 echo "⚙️  Building backend..."
 cd backend
-npm ci --legacy-peer-deps
+# --include=dev para asegurar @types/* en build (Vercel pone NODE_ENV=production)
+npm ci --legacy-peer-deps --include=dev
 npm run build
 
 # Copy compiled backend to api/ for Vercel deployment
@@ -19,7 +20,7 @@ cp -r backend/node_modules api/backend/
 # Build frontend
 echo "🎨 Building frontend..."
 cd frontend
-npm ci --legacy-peer-deps
+npm ci --legacy-peer-deps --include=dev
 npm run build
 cd ..
 
