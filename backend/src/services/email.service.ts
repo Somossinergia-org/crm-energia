@@ -113,8 +113,8 @@ export async function sendEmail(params: {
 
   // Reemplazar variables
   let html = params.variables ? replaceVariables(params.html, params.variables) : params.html;
-  let subject = params.variables ? replaceVariables(params.subject, params.variables) : params.subject;
-  let text = params.text && params.variables ? replaceVariables(params.text, params.variables) : params.text;
+  const subject = params.variables ? replaceVariables(params.subject, params.variables) : params.subject;
+  const text = params.text && params.variables ? replaceVariables(params.text, params.variables) : params.text;
 
   // Añadir firma
   if (params.firma || account.firma_html) {
