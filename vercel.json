@@ -1,6 +1,7 @@
 {
   "version": 2,
   "buildCommand": "bash build.sh",
+  "installCommand": "echo 'Skipping root install - build.sh runs npm ci in backend/ and frontend/'",
   "framework": "vite",
   "outputDirectory": "frontend/dist",
   "env": {
