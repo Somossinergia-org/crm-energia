@@ -247,6 +247,7 @@ Incluye: puntos fuertes, áreas de mejora y recomendación de acción para la pr
 // ── 9. Exportar Excel ──────────────────────────────────────────────────────
 export async function exportExcel(req: Request, res: Response) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const ExcelJS = require('exceljs');
     const { where, params } = userFilter(req);
     const p = [...params];
@@ -411,6 +412,7 @@ export async function exportPDF(req: Request, res: Response) {
 </body>
 </html>`;
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const puppeteer = require('puppeteer');
     const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
