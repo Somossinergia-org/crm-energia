@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticate } from '../middleware/auth';
+import { authenticate, authorize } from '../middleware/auth';
 import {
   getPitch,
   handleProspectObjection,
@@ -65,31 +65,31 @@ router.get('/panel/:prospect_id', getSalesPanel);
  * GET /api/sales/analytics/metrics?days=30
  * Obtener métricas generales de ventas (últimos N días)
  */
-router.get('/analytics/metrics', getSalesMetricsHandler);
+router.get('/analytics/metrics', authorize('admin', 'supervisor'), getSalesMetricsHandler);
 
 /**
  * GET /api/sales/analytics/effectiveness-by-state
  * Obtener efectividad de conversión por estado del prospecto
  */
-router.get('/analytics/effectiveness-by-state', getEffectivityHandler);
+router.get('/analytics/effectiveness-by-state', authorize('admin', 'supervisor'), getEffectivityHandler);
 
 /**
  * GET /api/sales/analytics/commercial-stats
  * Obtener estadísticas de desempeño por comercial
  */
-router.get('/analytics/commercial-stats', getCommercialStatsHandler);
+router.get('/analytics/commercial-stats', authorize('admin', 'supervisor'), getCommercialStatsHandler);
 
 /**
  * GET /api/sales/analytics/response-rate-by-temperature
  * Obtener tasa de respuesta y conversión por temperatura
  */
-router.get('/analytics/response-rate-by-temperature', getResponseRateHandler);
+router.get('/analytics/response-rate-by-temperature', authorize('admin', 'supervisor'), getResponseRateHandler);
 
 /**
  * GET /api/sales/analytics/email-performance
  * Obtener métricas de rendimiento de emails (últimos 30 días)
  */
-router.get('/analytics/email-performance', getEmailPerformanceHandler);
+router.get('/analytics/email-performance', authorize('admin', 'supervisor'), getEmailPerformanceHandler);
 
 // ── Endpoints de Follow-up ─────────────────────────────────────────────────────
 
@@ -103,7 +103,7 @@ router.get('/followup/alerts', getFollowUpAlertsHandler);
  * GET /api/sales/followup/alerts/all
  * Obtener todas las alertas de follow-up del sistema (solo admin)
  */
-router.get('/followup/alerts/all', getAllFollowUpAlertsHandler);
+router.get('/followup/alerts/all', authorize('admin', 'supervisor'), getAllFollowUpAlertsHandler);
 
 /**
  * POST /api/sales/followup/action/:prospect_id

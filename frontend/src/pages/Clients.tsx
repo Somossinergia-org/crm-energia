@@ -156,7 +156,7 @@ export default function Clients() {
           <HiOutlineOfficeBuilding className="w-12 h-12 text-gray-300 mx-auto mb-3" />
           <h3 className="text-lg font-medium text-gray-900 mb-1">Sin clientes aun</h3>
           <p className="text-sm text-gray-500">
-            Cuando un prospecto tenga un servicio con estado "Contratado", aparecera aqui automaticamente.
+            Cuando un prospecto tenga un servicio con estado &quot;Contratado&quot;, aparecera aqui automaticamente.
           </p>
         </div>
       ) : (

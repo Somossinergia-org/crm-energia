@@ -274,7 +274,7 @@ export default function SalesAgentPanel({
                   1️⃣ Apertura ({pitch.tiempos_estimados.apertura_seg}s)
                 </h4>
                 <p className="text-sm text-gray-700 leading-relaxed p-3 bg-gray-50 rounded-lg italic">
-                  "{pitch.apertura}"
+                  &quot;{pitch.apertura}&quot;
                 </p>
               </div>
 
@@ -284,7 +284,7 @@ export default function SalesAgentPanel({
                   2️⃣ Propuesta de Valor ({pitch.tiempos_estimados.propuesta_seg}s)
                 </h4>
                 <p className="text-sm text-gray-700 leading-relaxed p-3 bg-gray-50 rounded-lg italic">
-                  "{pitch.propuesta_valor}"
+                  &quot;{pitch.propuesta_valor}&quot;
                 </p>
               </div>
 
@@ -294,7 +294,7 @@ export default function SalesAgentPanel({
                   3️⃣ Cuerpo del Pitch ({pitch.tiempos_estimados.cierre_seg}s)
                 </h4>
                 <p className="text-sm text-gray-700 leading-relaxed p-3 bg-gray-50 rounded-lg italic">
-                  "{pitch.cuerpo_pitch}"
+                  &quot;{pitch.cuerpo_pitch}&quot;
                 </p>
               </div>
 
@@ -302,7 +302,7 @@ export default function SalesAgentPanel({
               <div>
                 <h4 className="text-sm font-semibold text-gray-700 mb-2">4️⃣ Cierre</h4>
                 <p className="text-sm text-gray-700 leading-relaxed p-3 bg-indigo-50 rounded-lg italic font-semibold text-indigo-900">
-                  "{pitch.cierre}"
+                  &quot;{pitch.cierre}&quot;
                 </p>
               </div>
 
@@ -432,7 +432,7 @@ export default function SalesAgentPanel({
                 <div>
                   <p className="text-xs font-semibold text-amber-600 mb-1">RESPUESTA INMEDIATA:</p>
                   <p className="text-sm text-amber-900 font-semibold italic">
-                    "{objectionResponse.respuesta_inmediata}"
+                    &quot;{objectionResponse.respuesta_inmediata}&quot;
                   </p>
                 </div>
 

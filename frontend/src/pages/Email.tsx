@@ -134,7 +134,7 @@ function ComposeTab() {
           <div className="text-center py-8">
             <HiOutlineCog className="w-12 h-12 text-gray-300 mx-auto mb-2" />
             <p className="text-gray-500">Configura una cuenta SMTP primero</p>
-            <p className="text-xs text-gray-400 mt-1">Ve a la pestana "Cuentas SMTP"</p>
+            <p className="text-xs text-gray-400 mt-1">Ve a la pestana &quot;Cuentas SMTP&quot;</p>
           </div>
         ) : (
           <>
@@ -867,7 +867,7 @@ function CuentasTab() {
       <div className="flex justify-between items-center">
         <div>
           <p className="text-sm text-gray-500">{accounts.length} cuentas configuradas</p>
-          <p className="text-xs text-gray-400">Para Gmail: usa una "contrasena de aplicacion" de tu cuenta Google</p>
+          <p className="text-xs text-gray-400">Para Gmail: usa una &quot;contrasena de aplicacion&quot; de tu cuenta Google</p>
         </div>
         <button onClick={() => { resetForm(); setShowForm(true); }} className="btn-primary flex items-center gap-1 text-sm">
           <HiOutlinePlus className="w-4 h-4" /> Nueva cuenta
